@@ -27,6 +27,7 @@ public class SignUp1 extends AppCompatActivity {
     RadioButton radioButton, buttonM, buttonF, buttonO;
     EditText name_first, name_last, age;
     Button nextbtn, backbtn;
+    User user;
 
     @SuppressLint("ResourceType")
     @Override
@@ -35,7 +36,7 @@ public class SignUp1 extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up1);
 
         //Get user and it's stored data from the previous activity
-        final User user = getIntent().getParcelableExtra("User");
+        user = getIntent().getParcelableExtra("User");
         //user.setId(1); //Set place holder. Will be changed in the review portion
 
         name_first = findViewById(R.id.Name_First);
@@ -93,6 +94,7 @@ public class SignUp1 extends AppCompatActivity {
                 String LastName = name_last.getText().toString().trim();
                 String Age_s = age.getText().toString().trim();
 
+
                 //Set error if first name is empty
                 if (TextUtils.isEmpty(FirstName)) {
                     name_first.setError("First name is required");
@@ -138,32 +140,14 @@ public class SignUp1 extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
 
-        //Currently not working
-      rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(RadioGroup group, int checkedId) {
-              int radioId = rgGender.getCheckedRadioButtonId();
-              buttonM.setChecked(false);
-              buttonF.setChecked(false);
-              buttonO.setChecked(false);
+    public void checkButton(View v){
+        int radioId = rgGender.getCheckedRadioButtonId();
 
-              switch (radioId) {
-                  case R.id.Gender_Male:
-                      user.setGender("Male");
-                      buttonM.setChecked(true);
-                      break;
-                  case R.id.Gender_Female:
-                      user.setGender("Female");
-                      buttonF.setChecked(true);
-                      break;
-                  case R.id.Gender_Other:
-                      user.setGender("Other");
-                      buttonO.setChecked(true);
-                      break;
-              }
-          }
-      });
+        radioButton = findViewById(radioId);
+
+        user.setGender(radioButton.getText().toString().trim());
     }
 }
 
