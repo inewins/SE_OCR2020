@@ -105,7 +105,7 @@ public class Settings_Main extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings_Main.this, DashActivity.class));
+                startActivity(new Intent(Settings_Main.this, Settings_Delete.class));
             }
         });
 
@@ -119,7 +119,7 @@ public class Settings_Main extends AppCompatActivity {
 
 //        Log.d("HELP","dr "+dr);
 
-        Button btn2EditNutrient = findViewById(R.id.editNutrientsBtn);
+        Button btn2EditNutrient = findViewById(R.id.editNutrientsBtn);                                             //Button to go to Edit Nutrients
         btn2EditNutrient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,12 +142,9 @@ public class Settings_Main extends AppCompatActivity {
                         if(userDBData.getEmail().equalsIgnoreCase(currUser.getEmail())){
                             currUserID = userDBData.getId();
                             currUserIndex = indexCounter;
-                            System.out.println("Curr User Index"+ currUserIndex);
-                            Log.d("HELP","UserID inside "+currUserID);
-                            Log.d("HELP","UserID index inside "+currUserIndex);
+//                            Log.d("HELP","UserID index inside "+currUserIndex);
                         }
                     }
-                    dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
                 }
             }
         });

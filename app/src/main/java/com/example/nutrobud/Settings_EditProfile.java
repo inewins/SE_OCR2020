@@ -61,9 +61,6 @@ public class Settings_EditProfile extends AppCompatActivity {
             age.setText(sage+"");
             weight.setText(sweight+"");
         }
-//        last.setText(lname);
-//        age.setText(sage);
-//        weight.setText(sweight);
         dr = FirebaseFirestore.getInstance().document("users/"+userID); //to get reference to users data
         Button submit = (Button)findViewById(R.id.submitBtn);                                               //Button to upload to database
         submit.setOnClickListener(new View.OnClickListener() {
