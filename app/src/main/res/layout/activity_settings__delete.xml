@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Settings_Delete">
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="237dp"
+        android:layout_height="91dp"
+        android:layout_marginTop="36dp"
+        android:text="Are you sure you want to delete your account? ALL data will be erased PERMANENTLY "
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/delView"
+        android:layout_width="234dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="12dp"
+        android:text="Please enter your password:"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/textView31"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@+id/textView31"
+        app:layout_constraintTop_toBottomOf="@+id/confirmBox" />
+
+    <CheckBox
+        android:id="@+id/confirmBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Yes, I am sure"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView31"
+        app:layout_constraintStart_toStartOf="@+id/textView31"
+        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+    <EditText
+        android:id="@+id/delPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/delView"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="@+id/delView"
+        app:layout_constraintTop_toBottomOf="@+id/delView" />
+
+    <Button
+        android:id="@+id/finalDeleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:text="Delete My Account"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/delPass"
+        app:layout_constraintStart_toStartOf="@+id/delPass"
+        app:layout_constraintTop_toBottomOf="@+id/delPass" />
+</androidx.constraintlayout.widget.ConstraintLayout>

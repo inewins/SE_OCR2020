@@ -1,3 +1,5 @@
+package com.example.nutrobud;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
