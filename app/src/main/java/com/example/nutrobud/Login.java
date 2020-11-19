@@ -99,7 +99,7 @@ public class Login extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(Login.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(getApplicationContext(), Settings_Main.class));
+                            startActivity(new Intent(getApplicationContext(), Dashboard.class));
                         }
                     }
                 });
