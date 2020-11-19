@@ -1,5 +1,3 @@
-package com.example.nutrobud;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -75,7 +73,7 @@ public class GoalsActivity extends AppCompatActivity {
 
         titleView = (TextView) findViewById(R.id.titleView); // "goals" title
         titleView = (TextView) findViewById(R.id.calorieText); // "CALORIES" title
-        
+
         // display current date
         dateTimeDisplay = (TextView) findViewById(R.id.date_textView);
         calendar = Calendar.getInstance();

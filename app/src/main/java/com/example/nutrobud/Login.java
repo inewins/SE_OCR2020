@@ -27,8 +27,8 @@ import org.w3c.dom.Text;
 public class Login extends AppCompatActivity {
 
     EditText EmailText, PasswordText;
-    Button loginbtn, signupbtn;
-    ProgressBar progressbar;
+    Button loginbtn, signupbtn, forgotbtn;
+    ProgressBar progressBar;
     FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fAuthStateLister;
 
@@ -44,9 +44,11 @@ public class Login extends AppCompatActivity {
         PasswordText = findViewById(R.id.password);
         loginbtn = findViewById(R.id.LoginBtn);
         signupbtn = findViewById(R.id.SignUpBtn);
+        forgotbtn = findViewById(R.id.ForgotBtn);
+        progressBar = findViewById(R.id.ProgressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         fAuth = FirebaseAuth.getInstance();
-        progressbar = findViewById(R.id.progressBar);
 
         fAuthStateLister = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -63,14 +65,18 @@ public class Login extends AppCompatActivity {
         };
 
         //If there is already a user active through authenticator, they will be automatically logged in
-        if(fAuth.getCurrentUser() != null)
-            startActivity(new Intent(getApplicationContext(), DashActivity.class));
+       /* if(fAuth.getCurrentUser() != null)
+            startActivity(new Intent(getApplicationContext(), DashActivity.class));*/
+       
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String Email = EmailText.getText().toString().trim();
                 final String Password = PasswordText.getText().toString().trim();
+
+                //Show progressbar to show loading
+                progressBar.setVisibility(View.VISIBLE);
 
                 //Check if email is empty
                 if (TextUtils.isEmpty(Email)) {
@@ -87,6 +93,8 @@ public class Login extends AppCompatActivity {
                 fAuth.signInWithEmailAndPassword(Email, Password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        //Hide progress bar because task is complete
+                        progressBar.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
                             Toast.makeText(Login.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
@@ -109,6 +117,30 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        forgotbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = EmailText.getText().toString().trim();
 
+                if(TextUtils.isEmpty(email))
+                {
+                    EmailText.setError("Enter email first");
+                    return;
+                }
+                progressBar.setVisibility(View.VISIBLE);
+                fAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if(task.isSuccessful()){
+                            Toast.makeText(Login.this, "Password reset email sent", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            }
+        });
     }
 }

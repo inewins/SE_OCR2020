@@ -45,34 +45,36 @@ public class Settings_EditAllergen extends AppCompatActivity {
         ingredientsNo.add("chicken");
 
         ingredient_no = (ArrayList<String>) ingredientsNo; //Import Users list
-
+        for (i[0] = 0; i[0] < 15; i[0]++){
+            btnArr[i[0]] = new Button(this);
+        }
         if (ingredient_no.size() > 0) {                                 //make buttons for all ingredient no
             for (i[0] = 0; i[0] < ingredient_no.size(); i[0]++){
                 String str = ingredient_no.get(i[0]);
-                btnArr[i[0]] = new Button(this);
+                //btnArr[i[0]] = new Button(this);
                 btnArr[i[0]].setText(str);
                 btnArr[i[0]].setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 btnArr[i[0]].setCompoundDrawablesWithIntrinsicBounds(0,0,android.R.drawable.ic_menu_delete,0);
                 linLayout.addView(btnArr[i[0]]);
                 final int finalI = i[0];
+                final int[] finalI1 = i;
                 btnArr[i[0]].setOnClickListener(new View.OnClickListener() {    //if clicked, delete the button
                     @Override
                     public void onClick(View v) {
                         btnArr[finalI].setVisibility(View.GONE);
-                        i[0]--;
+                        finalI1[0]--;
                     }
                 });
             }
 
         }
-
+        i[0]++;
         addnoBtn = (Button) findViewById(R.id.addBtn);   //addnoBtn is the add button
         addnoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String Item = editAllergen.getText().toString().trim();
                 int duplicate = 0;
-
                 //Check if Item is already in list of unwanted ingredients
                 for (int j = 0; j < ingredient_no.size(); j++) {
                     if (Item.equals(ingredient_no.get(j)))
@@ -86,16 +88,20 @@ public class Settings_EditAllergen extends AppCompatActivity {
                     btnArr[i[0]].setText(Item);
                     btnArr[i[0]].setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                     btnArr[i[0]].setCompoundDrawablesWithIntrinsicBounds(0,0,android.R.drawable.ic_menu_delete,0);
+                    final int index4del = i[0];
                     btnArr[i[0]].setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v) {               //click for delete
                             ViewGroup layout = (ViewGroup) btnArr[i[0]].getParent();
-                            btnArr[i[0]].setVisibility(View.GONE);
-//                            i[0]--;
+                            btnArr[index4del-1].setVisibility(View.GONE);
+                            ingredient_no.remove(index4del-1);
+                            i[0]--;
+                            Log.d("DELETION", String.valueOf(i[0]));
                         }
                     });
                     linLayout.addView(btnArr[i[0]]);
-//                    i[0]++;
+                    i[0]++;
+                    Log.d("BUTTON MADE", String.valueOf(i[0]));
 
                 } else if (duplicate == 1) {
                     Toast.makeText(Settings_EditAllergen.this, "Duplicate ingredient", Toast.LENGTH_SHORT).show();
