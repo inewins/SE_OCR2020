@@ -50,6 +50,7 @@ public class Login extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
 
+
         fAuthStateLister = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -98,7 +99,7 @@ public class Login extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(Login.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                            startActivity(new Intent(getApplicationContext(), Settings_Main.class));
                         }
                     }
                 });

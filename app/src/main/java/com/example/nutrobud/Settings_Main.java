@@ -1,19 +1,27 @@
 package com.example.nutrobud;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.nutrobud.ui.home.Stats;
 import com.example.nutrobud.ui.home.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,10 +30,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Settings_Main extends AppCompatActivity {
 
-    private DocumentReference userDB = FirebaseFirestore.getInstance().collection("users").document("10006");//Firestore ref to pull user data
+    FirebaseFirestore userDB = FirebaseFirestore.getInstance();//Firestore ref to pull user data
+    FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+    int currUserID;
+    int currUserIndex;
+    User userDBData;
+    List<User> userData = new ArrayList<>();
+    DocumentReference dr;
+   // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
 
     @Override
@@ -33,51 +49,9 @@ public class Settings_Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__main);
 
-        /*From Here to Line 56 is me trying to hardcode a user so I can manipulate the data!*/
-        List<String> ingredientsNo = new ArrayList<String>();
-        ingredientsNo.add("nuts");
-        ingredientsNo.add("almonds");
-        ingredientsNo.add("chicken");
-        List<String> ingredientsYes = new ArrayList<String>();
-        ingredientsYes.add("chocolate");
-        ingredientsYes.add("icecream");
-        ingredientsYes.add("vanilla");
-        List<String> ingredientsYesGoalsQty = new ArrayList<String>();
-        ingredientsYesGoalsQty.add("1");
-        ingredientsYesGoalsQty.add("2");
-        ingredientsYesGoalsQty.add("3");
-        List<String> ingredientsYesTrackedQty = new ArrayList<String>();
-        ingredientsYesTrackedQty.add("1");
-        ingredientsYesTrackedQty.add("2");
-        ingredientsYesTrackedQty.add("3");
+        makeUserData();
 
-        final User[] user = {new User()};
-        user[0].setId(10002);
-        user[0].setEmail("anh.nguyen2@mav.uta.edu");
-        user[0].setPassword("myPassWo@rd");
-        user[0].setFirstName("Anh");
-        user[0].setSecondName("Nguyen");
-        user[0].setGender("m");
-        user[0].setAge(69);
-        user[0].setWeight(169);
-        user[0].setIngredientsNo(ingredientsNo);
-        user[0].setIngredientsYes(ingredientsYes);
-        user[0].setIngredientsYesGoalsQty(ingredientsYesGoalsQty);
-        user[0].setIngredientsYesTrackedQty(ingredientsYesTrackedQty);
-        user[0].setCalorieGoalsQty(2000);
-        user[0].setcalorieTrackedQty(2000);
 
-        userDB.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    if(doc.exists()){
-                        Log.d("User Data",doc.getData().toString());
-                    }
-                }
-            }
-        });
 
         /*End of Creating User*/
 
@@ -85,16 +59,37 @@ public class Settings_Main extends AppCompatActivity {
         btn2EditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings_Main.this, Settings_EditProfile.class));
+//                Log.d("HELP","UserData FIRST NAME "+userData.get(currUserIndex).getFirstName());
+                String userID = userData.get(currUserIndex).getId()+"";
+                String fName = userData.get(currUserIndex).getFirstName();
+                String lName = userData.get(currUserIndex).getSecondName();
+                int age = userData.get(currUserIndex).getAge();
+                int weight = userData.get(currUserIndex).getWeight();
+                Intent i = new Intent(getApplicationContext(), Settings_EditProfile.class);
+                i.putExtra("userID",userID);
+                i.putExtra("fname",fName);
+                i.putExtra("lname",lName);
+                i.putExtra("age",age);
+                i.putExtra("weight",weight);
+                startActivity(i);
             }
         });
+
 
         Button btn2EditAllergen = (Button)findViewById(R.id.editAllergenBtn);                                   //Button to go to EditAllergen page
         btn2EditAllergen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings_Main.this, Settings_EditAllergen.class));
-
+                String allergensString = "";
+                List<String> allergens = userData.get(currUserIndex).getIngredientsNo();
+                for (String q: allergens){
+                    allergensString= allergensString+q+" ";
+                }
+                String userID = userData.get(currUserIndex).getId()+"";
+                Intent i = new Intent(getApplicationContext(), Settings_EditAllergen.class);
+                i.putExtra("userID",userID);
+                i.putExtra("allergens", allergensString);
+                startActivity(i);
             }
         });
 
@@ -106,7 +101,7 @@ public class Settings_Main extends AppCompatActivity {
             }
         });
 
-        Button deleteBtn = (Button)findViewById(R.id.delete_acc);                                            //Button to go to delete account
+        final Button deleteBtn = (Button)findViewById(R.id.delete_acc);                                            //Button to go to delete account
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,5 +109,47 @@ public class Settings_Main extends AppCompatActivity {
             }
         });
 
+        Button btn2Login = (Button)findViewById(R.id.signOutBtn);                                            //Button to go back to LOGIN
+        btn2Login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings_Main.this, Login.class));
+            }
+        });
+
+//        Log.d("HELP","dr "+dr);
+
+        Button btn2EditNutrient = findViewById(R.id.editNutrientsBtn);
+        btn2EditNutrient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings_Main.this, Settings_EditNutrient.class));
+            }
+        });
+
     }
-}
+    void makeUserData(){
+        userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
+                if(!queryDocumentSnapshot.isEmpty()){
+                    List<DocumentSnapshot> userDBDataList = queryDocumentSnapshot.getDocuments();
+                    int indexCounter=-1;
+                    for(DocumentSnapshot d: userDBDataList){
+                        indexCounter++;
+                        userDBData = d.toObject(User.class);
+                        userData.add(userDBData);
+                        if(userDBData.getEmail().equalsIgnoreCase(currUser.getEmail())){
+                            currUserID = userDBData.getId();
+                            currUserIndex = indexCounter;
+                            System.out.println("Curr User Index"+ currUserIndex);
+                            Log.d("HELP","UserID inside "+currUserID);
+                            Log.d("HELP","UserID index inside "+currUserIndex);
+                        }
+                    }
+                    dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
+                }
+            }
+        });
+    }
+};
