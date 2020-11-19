@@ -21,11 +21,12 @@
         android:id="@+id/editFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="96dp"
         android:ems="10"
         android:hint="First Name"
         android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.746"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,6 +71,48 @@
         android:text="Back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="79dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:text="First Name:"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/editFirstName"
+        app:layout_constraintEnd_toStartOf="@+id/editFirstName" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="79dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Last Name:"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/editLastName"
+        app:layout_constraintEnd_toEndOf="@+id/textView26" />
+
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="79dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Weight:"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/editWeight"
+        app:layout_constraintEnd_toEndOf="@+id/textView30" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="79dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Age:"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/editAge"
+        app:layout_constraintEnd_toEndOf="@+id/textView28" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

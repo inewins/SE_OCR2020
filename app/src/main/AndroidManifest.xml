@@ -15,11 +15,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.objectPassEx.Act3"></activity>
+        <activity android:name=".Settings_EditNutrient"></activity>
+        <activity android:name=".ui.objectPassEx.Act3" />
         <activity android:name=".ui.objectPassEx.Act2" />
         <activity android:name=".ui.objectPassEx.Act1" />
-        <activity android:name=".Settings_EditAllergen"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".Settings_EditAllergen"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Settings_EditProfile" />
         <activity android:name=".Settings_Main" />
         <activity android:name=".SignUpLoginInfo" />
