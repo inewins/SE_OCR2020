@@ -18,11 +18,18 @@ import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.example.nutrobud.ui.home.HomeFragment;
+import com.example.nutrobud.ui.home.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -37,13 +44,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class DashActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
+    private User userDBData;
+    private String currUserName;
+    private int currUserIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -60,6 +73,27 @@ public class DashActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        View headerView = navigationView.getHeaderView(0);
+        final TextView navUsername = (TextView) headerView.findViewById(R.id.navName);
+        TextView navEmail = (TextView) headerView.findViewById(R.id.navEmail);
+
+        userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
+                if(!queryDocumentSnapshot.isEmpty()){
+                    List<DocumentSnapshot> userDBDataList = queryDocumentSnapshot.getDocuments();
+                    for(DocumentSnapshot d: userDBDataList){
+                        userDBData = d.toObject(User.class);
+                        if(userDBData.getEmail().equalsIgnoreCase(currUser.getEmail())){
+                            currUserName = userDBData.getFirstName()+" "+userDBData.getSecondName();
+                            navUsername.setText(currUserName);
+                        }
+                    }
+                }
+            }
+        });
+
+        navEmail.setText(currUser.getEmail());
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
