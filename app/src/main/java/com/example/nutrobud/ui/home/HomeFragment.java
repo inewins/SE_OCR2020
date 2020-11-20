@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,8 +38,11 @@ import com.example.nutrobud.CalendarActivity;
 import com.example.nutrobud.DashActivity;
 import com.example.nutrobud.GoalsActivity;
 import com.example.nutrobud.R;
+import com.example.nutrobud.SignUpLoginInfo;
 import com.example.nutrobud.StatisticsActivity;
 import com.example.nutrobud.ui.objectPassEx.Act1;
+import com.example.nutrobud.ui.scanResult.ScanHelper;
+import com.example.nutrobud.ui.scanResult.ScanResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +66,7 @@ import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,6 +114,7 @@ public class HomeFragment<i> extends Fragment {
     private int currUserID;
     private int currUserIndex;
 
+    private ScanHelper scanHelper = new ScanHelper();
 
     //List where pulled data will be kept on a per index basis
     private List<User> userData = new ArrayList<>();
@@ -191,7 +198,8 @@ public class HomeFragment<i> extends Fragment {
         calendarBtn = (Button) getView().findViewById(R.id.calendarBtn);
         goalsBtn = (Button) getView().findViewById(R.id.goalsBtn);
         statisticsBtn = (Button) getView().findViewById(R.id.statisticsBtn);
-        secretBtn = (Button) getView().findViewById(R.id.secretBtn);
+
+
 
         imageView = (ImageView) getView().findViewById(R.id.imageView);
         if(Build.VERSION.SDK_INT >=23){
@@ -233,17 +241,6 @@ public class HomeFragment<i> extends Fragment {
                 startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
             }
         });
-
-        secretBtn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View view) {
-                countClicks++;
-                if(countClicks==5){
-                    startActivity(new Intent(getApplicationContext(), Act1.class));
-                }
-            }
-        });
     }
 
     //Whenever the user is done taking a picture:
@@ -279,7 +276,6 @@ public class HomeFragment<i> extends Fragment {
                                         e.printStackTrace();
                                     }
                                 });
-
                 //For debugging purposes: - sahajamatya - 11/01
                 System.out.println("This is the bitmap reference: "+bitmap);
                 System.out.println("This is the path to file: "+pathToFile);
@@ -308,14 +304,22 @@ public class HomeFragment<i> extends Fragment {
         //Setting data in the Firestore DB after done searching
         //setFirestoreData
         user.put("stats", statsMapObj);
+        //CREATE NEW VAR TO STORE VALUES BEFORE ADDITION WITH PREV VALS
+
+
+        scanHelper.setId(currUserID);
         dr.set(user, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                Intent i = new Intent(getApplicationContext(), ScanResult.class);
+                i.putExtra("userMap", scanHelper);
+                startActivity(i);
             }
         });
+        //pass to other function
         //END: setFirestoreData
     }
+
 
     public void searchHelper(String textBlock, String calories, String sodium, String protein, String carbs, String fat){
         searchNutrients(textBlock, calories, caloriesScanStatus);
@@ -372,25 +376,30 @@ public class HomeFragment<i> extends Fragment {
 
             if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
                 statsObj.setCaloriesTrackedQty(trackedCalories + entityQtyNum);
+                scanHelper.setCaloriesTrackedQty(entityQtyNum);
                 caloriesScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("sodium") && !sodiumScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedSodium + entityQtyNum);
+                    scanHelper.setSodium(entityQtyNum);
                 }
                 sodiumScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("protein") && !proteinScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedProtein + entityQtyNum);
+                    scanHelper.setProtein(entityQtyNum);
                 }
                 proteinScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("carbohydrate") && !carbsScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedCarbohydrate + entityQtyNum);
+                    scanHelper.setCarbohydrate(entityQtyNum);
                 }
                 carbsScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("fat") && !fatScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedFat + entityQtyNum);
+                    scanHelper.setFat(entityQtyNum);
                 }
                 fatScanStatus = true;
             }
