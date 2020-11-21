@@ -1,3 +1,5 @@
+package com.example.nutrobud;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -5,6 +7,8 @@ import android.os.Handler;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import java.util.HashMap;
+import android.widget.SimpleAdapter;
 import android.view.View;
 import android.os.Handler;
 import android.os.Bundle;
@@ -12,11 +16,15 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
+import android.widget.ScrollView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import android.widget.ListView;
+import android.widget.LinearLayout;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import com.google.firebase.firestore.DocumentReference;
 import com.example.nutrobud.ui.home.User;
@@ -32,10 +40,24 @@ import com.google.firebase.auth.FirebaseUser;
 public class GoalsActivity extends AppCompatActivity {
     //nutrient progress bars
     TextView tv1,tv2;
-    private ProgressBar progressBar1, progressBar2;
+    private ProgressBar progressBar1, progressBar2, progressBar3;
     int progressStatus1=70, progressStatus2=10; // hardcoded for now- working on retrieving data from database
     int nutr1goal=100;
     int nutr2goal=100;
+    int progressStatus;
+    int[] nutrGoal;
+    public String nutrientName;
+    public String temp = "";
+    String[] text;
+    int[] bar;
+    String [] nutrName;
+    int [] nutrAmount;
+    int counter=0;
+    int milligrams;
+    int [] mg;
+
+
+   // final LinearLayout linLayout = findViewById(R.id.linLayout);
 
     TextView titleView;
     TextView ratio;
@@ -54,6 +76,7 @@ public class GoalsActivity extends AppCompatActivity {
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
     private String todayDate = formatter.format(new Date());
 
+
     // get data from Firestore
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
     private List<User> userData= new ArrayList<>();
@@ -69,7 +92,9 @@ public class GoalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_goals);
         final Resources res = getResources();
 
-        User user = new User();
+        //allProgress = findViewById(R.id.progressBarList);
+        final int[] i = new int[1];
+        ListView allprogress = (ListView) findViewById(R.id.listView);
 
         titleView = (TextView) findViewById(R.id.titleView); // "goals" title
         titleView = (TextView) findViewById(R.id.calorieText); // "CALORIES" title
@@ -130,7 +155,27 @@ public class GoalsActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                            }).start();
+                                 }).start();
+                            }
+
+                            // add progress bars dynamically
+                            ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
+                            nutrGoal = new int[userData.get(currUserIndex).getIngredientsYes().size()];
+                            if (userData.get(currUserIndex).getIngredientsYes().size() != 0) {
+                                for(int i = 0; i < userData.get(currUserIndex).getIngredientsYes().size() ; i++){
+                                    //nutrientName = userData.get(currUserIndex).getIngredientsYes().get(i);
+//                                    progressStatus = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(i);
+                                    nutrGoal[i] = Integer.parseInt(userData.get(currUserIndex).getIngredientsYesGoalsQty().get(i));
+                                    System.out.println("Nutrient goal is " + nutrGoal);
+                                    counter++;
+                                }
+                            }
+                            System.out.println("Counter is: " + counter);
+                            System.out.println("Size is: " + userData.get(currUserIndex).getIngredientsYes().size());
+                            String[] from = {"text", "bar"};
+                            int[] to= {R.id.pbarratio, R.id.pbar};
+                            for (int i=0; i<counter; i++){
+                                System.out.println("Goals in mg is: " + nutrGoal[i]);
                             }
 
                         }
