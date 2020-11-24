@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Goals"
+        android:textColor="#FFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.051"
-        android:textColor="#FFFF"/>
+        app:layout_constraintVertical_bias="0.051" />
 
     <TextView
         android:id="@+id/date_textView"
@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:inputType="date"
+        android:textColor="#FFFF"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleView"
-        app:layout_constraintVertical_bias="0.035"
-        android:textColor="#FFFF"/>
+        app:layout_constraintVertical_bias="0.035" />
 
     <ProgressBar
         android:id="@+id/calProgressBar"
@@ -81,11 +81,13 @@
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.561" />
 
+
     <ProgressBar
         android:id="@+id/pbar1"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:indeterminate="false"
         android:max="100"
         android:maxHeight="10dip"
@@ -93,25 +95,21 @@
         android:progress="50"
         android:progressDrawable="@drawable/progress_limit"
         android:secondaryProgress="100"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calProgressBar"
-        app:layout_constraintVertical_bias="0.098"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/calProgressBar" />
 
     <TextView
         android:id="@+id/pbar1ratio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="#FFFF"
         app:layout_constraintBottom_toTopOf="@+id/pbar1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.158"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calProgressBar"
-        android:textColor="#FFFF"/>
-
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/pbar2"
@@ -137,13 +135,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="#FFFF"
         app:layout_constraintBottom_toTopOf="@+id/pbar2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.158"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calProgressBar"
-        app:layout_constraintVertical_bias="1.0"
-        android:textColor="#FFFF"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/calorieText"

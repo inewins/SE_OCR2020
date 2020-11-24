@@ -50,6 +50,7 @@ public class GoalsActivity extends AppCompatActivity {
     int nutr2goal=100;
     int progressStatus;
     int[] nutrGoal;
+    String[] nutritionGoal;
     public String nutrientName;
     public String temp = "";
     String[] text;
@@ -178,7 +179,7 @@ public class GoalsActivity extends AppCompatActivity {
                                  }).start();
                            // }
 
-                            // add progress bars dynamically
+                            // access elements of hashmap
                             ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
 
                             nutrGoal = new int[userData.get(currUserIndex).getIngredientsYes().size()];
@@ -193,16 +194,21 @@ public class GoalsActivity extends AppCompatActivity {
                                 }
                             }
                             // get names of ingredients tracked
-                            Set<String> milliName = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().keySet();
-                            nutrName = convert(milliName);
+                            Set<String> milliName = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().keySet(); // set keys to Set
+                            nutrName = convert(milliName); //convert to string array
                             System.out.println("Array of string: " + Arrays.toString(nutrName));
 
 
 
                             System.out.println("Counter is: " + counter);
                             System.out.println("Size is: " + userData.get(currUserIndex).getIngredientsYes().size());
+
+
+
                             String[] from = {"text", "bar"};
                             int[] to= {R.id.pbarratio, R.id.pbar};
+
+                            // run through each ingredient for tracking
                             for (int i=0; i<counter; i++){
 //                                System.out.println("Goals in mg is: " + nutrGoal[i]);
 //                                System.out.println("Array of string name is: " + nutrName[i]);
@@ -210,6 +216,7 @@ public class GoalsActivity extends AppCompatActivity {
                                 nutrientName = nutrName[i];
                                 intake = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(nutrName[i]);
                                 System.out.println(nutrientName + ": "  + intake + "/" + goal);
+
                             }
 
                         }
