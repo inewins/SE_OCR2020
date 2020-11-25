@@ -1,10 +1,14 @@
 package com.example.nutrobud;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,8 +44,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static java.sql.Types.NULL;
+
 
 public class GoalsActivity extends AppCompatActivity {
+    Button b2Dashbtn;
+
     //nutrient progress bars
     TextView tv1,tv2;
     private ProgressBar progressBar1, progressBar2, progressBar3;
@@ -113,6 +121,15 @@ public class GoalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_goals);
         final Resources res = getResources();
 
+        b2Dashbtn=(Button)findViewById(R.id.backToDashButton);
+        b2Dashbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), DashActivity.class);
+                startActivity(i);
+            }
+        });
+
         //allProgress = findViewById(R.id.progressBarList);
         final int[] i = new int[1];
         ListView allprogress = (ListView) findViewById(R.id.listView);
@@ -144,7 +161,13 @@ public class GoalsActivity extends AppCompatActivity {
                             currUserID = userDBData.getId();
                             currUserIndex = indexCounter;
                             calGoals = userData.get(currUserIndex).getCalorieGoalsQty();
-                            currentCals = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
+                            if (userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty() != NULL) {
+                                currentCals = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
+                            }
+                            else {
+                                currentCals = 0;
+                            }
+
 
                             //if(calGoals != 0 && currentCals != 0) {
                             // horizontal progress bar for calories, but in circular shape

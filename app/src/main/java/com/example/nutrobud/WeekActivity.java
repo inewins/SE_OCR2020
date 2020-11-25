@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class WeekActivity extends AppCompatActivity {
 
     TextView statsTitle, weekDisplay;
-    Button b2Dashbtn, weekButton, dayButton;
+    Button backButton;
     private String date;
 
     Calendar c1=Calendar.getInstance();
@@ -25,9 +25,17 @@ public class WeekActivity extends AppCompatActivity {
 
         //display (button) titles
         statsTitle=(TextView) findViewById(R.id.statsTitle);
-        b2Dashbtn=(Button)findViewById(R.id.backToDashButton);
-        weekButton= (Button)findViewById(R.id.weekButton);
-        dayButton= (Button) findViewById(R.id.dayButton);
+        backButton=(Button)findViewById(R.id.backButton);
+
+
+        backButton=(Button)findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), StatisticsActivity.class);
+                startActivity(i);
+            }
+        });
 
         //first day of week
         weekDisplay = (TextView) findViewById(R.id.date_textView);
@@ -43,19 +51,19 @@ public class WeekActivity extends AppCompatActivity {
         int year7 = c1.get(Calendar.YEAR);
         int month7 = c1.get(Calendar.MONTH)+1;
         int day7 = c1.get(Calendar.DAY_OF_MONTH);
-
-        weekDisplay.setText("Week of: " +year1 + month1 + day1  + "-" + year7 + month7 + day1);
-
-
+//
+//        weekDisplay.setText("Week of: " +year1 + month1 + day1  + "-" + year7 + month7 + day1);
 
 
-        dayButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), StatisticsActivity.class);
-                startActivity(i);
-            }
-        });
+
+
+//        dayButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(getApplicationContext(), StatisticsActivity.class);
+//                startActivity(i);
+//            }
+//        });
     }
 
 
