@@ -28,13 +28,7 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        // display current date
-        dateTimeDisplay = (TextView) findViewById(R.id.date_textView);
-        dateTimeDisplay = (TextView) findViewById(R.id.date_textView);
-        calendar = Calendar.getInstance();
-        dateFormat = new SimpleDateFormat("EEE- MMM d");
-        date = dateFormat.format(calendar.getTime());
-        dateTimeDisplay.setText(date);
+
 
         //display (button) titles
         statsTitle=(TextView) findViewById(R.id.statsTitle);
@@ -42,6 +36,13 @@ public class StatisticsActivity extends AppCompatActivity {
         weekButton= (Button)findViewById(R.id.weekButton);
         dayButton= (Button) findViewById(R.id.dayButton);
 
+        b2Dashbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), DashActivity.class);
+                startActivity(i);
+            }
+        });
 
         weekButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,5 +51,14 @@ public class StatisticsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        dayButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), StatisticsDayActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 }
