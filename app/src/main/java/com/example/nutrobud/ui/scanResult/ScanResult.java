@@ -34,6 +34,15 @@ public class ScanResult extends AppCompatActivity {
 
         ScanHelper user= (ScanHelper) getIntent().getParcelableExtra("userMap");
         DocumentReference dr = FirebaseFirestore.getInstance().document("users/"+user.getId());
+        String unwantedIngredients="";
+        for(String unwantedIngredient: user.getDetectedAllergens()){
+            if(unwantedIngredient!= null) {
+                unwantedIngredients += unwantedIngredient.toUpperCase() + ", ";
+            }
+        }
+
+        TextView unwantedRes = (TextView)findViewById(R.id.unwantedRes);
+        unwantedRes.setText(unwantedIngredients);
 
         TextView calDisplay = (TextView)findViewById(R.id.calDisplay);
         calDisplay.setText(String.valueOf(user.getCaloriesTrackedQty()) + " cal.");
@@ -49,6 +58,12 @@ public class ScanResult extends AppCompatActivity {
 
         TextView sodiumDisplay = (TextView)findViewById(R.id.sodiumDisplay);
         sodiumDisplay.setText(String.valueOf(user.getSodium())+"g");
+
+        TextView fiberDisplay = (TextView)findViewById(R.id.fiberDisplay);
+        fiberDisplay.setText(String.valueOf(user.getFiber())+"g");
+
+        TextView sugarDisplay = (TextView)findViewById(R.id.sugarDisplay);
+        sugarDisplay.setText(String.valueOf(user.getSugar())+"g");
 
         Button proceedBtn = findViewById(R.id.proceedBtn);
         proceedBtn.setOnClickListener(new View.OnClickListener() {
