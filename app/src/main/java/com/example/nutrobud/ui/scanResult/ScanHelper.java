@@ -15,17 +15,23 @@ public class ScanHelper implements Parcelable {
     private int fat;
     private int protein;
     private int sodium;
+    private int sugar;
+    private int fiber;
+    private String[] detectedAllergens;
 
     public ScanHelper() {
     }
 
-    public ScanHelper(int id, int caloriesTrackedQty, int carbohydrate, int fat, int protein, int sodium) {
+    public ScanHelper(int id, int caloriesTrackedQty, int carbohydrate, int fat, int protein, int sodium, String[] detectedAllergens, int sugar, int fiber) {
         this.id = id;
         this.caloriesTrackedQty = caloriesTrackedQty;
         this.carbohydrate = carbohydrate;
         this.fat = fat;
         this.protein = protein;
         this.sodium = sodium;
+        this.detectedAllergens = detectedAllergens;
+        this.sugar = sugar;
+        this.fiber = fiber;
     }
 
     protected ScanHelper(Parcel in) {
@@ -35,6 +41,9 @@ public class ScanHelper implements Parcelable {
         fat = in.readInt();
         protein = in.readInt();
         sodium = in.readInt();
+        detectedAllergens = in.createStringArray();
+        fiber = in.readInt();
+        sugar = in.readInt();
     }
 
     public static final Creator<ScanHelper> CREATOR = new Creator<ScanHelper>() {
@@ -97,6 +106,30 @@ public class ScanHelper implements Parcelable {
         this.id = id;
     }
 
+    public String[] getDetectedAllergens() {
+        return detectedAllergens;
+    }
+
+    public void setDetectedAllergens(String[] detectedAllergens) {
+        this.detectedAllergens = detectedAllergens;
+    }
+
+    public int getSugar() {
+        return sugar;
+    }
+
+    public void setSugar(int sugar) {
+        this.sugar = sugar;
+    }
+
+    public int getFiber() {
+        return fiber;
+    }
+
+    public void setFiber(int fiber) {
+        this.fiber = fiber;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -107,8 +140,11 @@ public class ScanHelper implements Parcelable {
         parcel.writeInt(id);
         parcel.writeInt(caloriesTrackedQty);
         parcel.writeInt(carbohydrate);
-        parcel.writeInt(protein);
         parcel.writeInt(fat);
+        parcel.writeInt(protein);
         parcel.writeInt(sodium);
+        parcel.writeStringArray(detectedAllergens);
+        parcel.writeInt(fiber);
+        parcel.writeInt(sugar);
     }
 }

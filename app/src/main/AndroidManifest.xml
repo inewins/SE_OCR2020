@@ -26,6 +26,7 @@
             android:name=".Settings_EditAllergen"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Settings_EditProfile" />
+        <activity android:name=".ui.scanResult.ScanResult" />
         <activity android:name=".Settings_Main" />
         <activity android:name=".SignUpLoginInfo" />
         <activity android:name=".SignUpReview" />

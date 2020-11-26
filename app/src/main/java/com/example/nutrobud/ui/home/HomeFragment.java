@@ -43,6 +43,7 @@ import com.example.nutrobud.StatisticsActivity;
 import com.example.nutrobud.ui.objectPassEx.Act1;
 import com.example.nutrobud.ui.scanResult.ScanHelper;
 import com.example.nutrobud.ui.scanResult.ScanResult;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -97,6 +98,8 @@ public class HomeFragment<i> extends Fragment {
     boolean proteinScanStatus = false;
     boolean carbsScanStatus = false;
     boolean fatScanStatus = false;
+    boolean fiberScanStatus = false;
+    boolean sugarScanStatus = false;
 
     //Firebase Cloud Firestore Gang
     private Map<String, Object> user = new HashMap<String, Object>(); //User obj will be wrapped into this map to be posted
@@ -123,7 +126,10 @@ public class HomeFragment<i> extends Fragment {
     private String todayDate = formatter.format(new Date());
 
     //hardcoded allergen array, for now. Will be dynamically pulled from Firestore in near future.
-    String[] allergens = {"citric acid", "folic acid"};
+    String[] allergens;
+    String[] scannables = {"calories","carbohydrate", "protein", "fat", "sodium", "sugar", "fiber"};
+    boolean[] scannablesStatus ={false, false, false, false, false, false, false};
+    String[] detectedAllergens;
 
     private int countClicks = 0;
 
@@ -179,6 +185,13 @@ public class HomeFragment<i> extends Fragment {
                         if(userDBData.getEmail().equalsIgnoreCase(currUser.getEmail())){
                             currUserID = userDBData.getId();
                             currUserIndex = indexCounter;
+                            allergens = new String[userDBData.getIngredientsNo().size()];
+                            int i=0;
+                            for(String s: userDBData.getIngredientsNo()){
+                                allergens[0] = s;
+                                i++;
+                            }
+                            detectedAllergens = new String[userDBData.getIngredientsNo().size()];
                         }
                     }
                     dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
@@ -252,6 +265,8 @@ public class HomeFragment<i> extends Fragment {
         proteinScanStatus = false;
         carbsScanStatus = false;
         fatScanStatus = false;
+        fiberScanStatus = false;
+        sugarScanStatus = false;
         if(resultCode == RESULT_OK){
             if(requestCode == 1){
                 Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
@@ -297,8 +312,12 @@ public class HomeFragment<i> extends Fragment {
         //text search algorithm
         for (int i = 0; i < blocks.size(); i++) {
             String textBlock = blocks.get(i).getText();
-            searchHelper(textBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
-            //searchHelper helps search for the param values inside textBlock
+            int j = 0;
+            for(String scannable: scannables){
+                searchNutrients(textBlock, scannable, scannablesStatus[j]);
+                j++;
+            }
+            searchAllergens(textBlock);
         }
 
         //Setting data in the Firestore DB after done searching
@@ -320,30 +339,23 @@ public class HomeFragment<i> extends Fragment {
         //END: setFirestoreData
     }
 
-
-    public void searchHelper(String textBlock, String calories, String sodium, String protein, String carbs, String fat){
-        searchNutrients(textBlock, calories, caloriesScanStatus);
-        searchNutrients(textBlock, sodium, sodiumScanStatus);
-        searchNutrients(textBlock, protein, proteinScanStatus);
-        searchNutrients(textBlock, carbs, carbsScanStatus);
-        searchNutrients(textBlock, fat, fatScanStatus);
-
-        searchAllergens(textBlock);
-    }
-
     public void searchAllergens(String textBlock){
         for(String s: allergens){
-            if(textBlock.toLowerCase().contains(s) && !memo.contains(s)){
-                System.out.println("ALLERGEN DETECTED: "+ s.toUpperCase());
-                memo+=s+',';
+            if(s!=null) {
+                if (textBlock.toLowerCase().contains(s) && !memo.contains(s)) {
+                    System.out.println("ALLERGEN DETECTED: " + s.toUpperCase());
+                    detectedAllergens = ArrayUtils.appendToArray(detectedAllergens, s);
+                    memo += s + ',';
+                }
             }
         }
+        scanHelper.setDetectedAllergens(detectedAllergens);
     }
 
     public void searchNutrients(String textBlock, final String entityToSearch, boolean scanStatus){
         String entityQty;
 
-        if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus){
+        if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus && fiberScanStatus && sugarScanStatus){
             return;
         }
 
@@ -363,6 +375,8 @@ public class HomeFragment<i> extends Fragment {
             int trackedProtein = 0;
             int trackedSodium =0;
             int trackedFat = 0;
+            int trackedFiber = 0;
+            int trackedSugar = 0;
 
             //check if it's already recorded today
             if(userData.get(currUserIndex).getStats().containsKey(todayDate)){
@@ -372,6 +386,8 @@ public class HomeFragment<i> extends Fragment {
                 trackedProtein = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("protein");
                 trackedSodium = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("sodium");
                 trackedFat = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("fat");
+                trackedFiber = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("fiber");
+                trackedSugar = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("sugar");
             }
 
             if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
@@ -402,6 +418,18 @@ public class HomeFragment<i> extends Fragment {
                     scanHelper.setFat(entityQtyNum);
                 }
                 fatScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("fiber") && !fiberScanStatus){
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), trackedFiber + entityQtyNum);
+                    scanHelper.setFiber(entityQtyNum);
+                }
+                fiberScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("sugar") && !sugarScanStatus){
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), trackedSugar + entityQtyNum);
+                    scanHelper.setSugar(entityQtyNum);
+                }
+                sugarScanStatus = true;
             }
 
             if(userData.get(currUserIndex).getIngredientsYes().contains(entityToSearch)){
