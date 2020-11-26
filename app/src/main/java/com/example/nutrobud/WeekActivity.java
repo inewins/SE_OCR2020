@@ -54,7 +54,15 @@ public class WeekActivity extends AppCompatActivity {
 //
 //        weekDisplay.setText("Week of: " +year1 + month1 + day1  + "-" + year7 + month7 + day1);
 
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        cal.set(Calendar.DAY_OF_WEEK, cal.MONDAY);
+        String firstWkDay = String.valueOf(cal.getTime());
+//cal.set(Calendar.DAY_OF_WEEK, cal.SUNDAY);
+        cal.add(Calendar.DAY_OF_WEEK, 6);
+        String lastWkDay =  String.valueOf(cal.getTime());
 
+        System.out.println("first day to last day: " + firstWkDay + "-" + lastWkDay);
 
 
 //        dayButton.setOnClickListener(new View.OnClickListener(){

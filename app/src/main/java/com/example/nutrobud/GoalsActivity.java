@@ -1,6 +1,7 @@
 package com.example.nutrobud;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -70,6 +73,11 @@ public class GoalsActivity extends AppCompatActivity {
     int milligrams;
     int intake;
     int goal;
+    ArrayList<TextView> textArr = new ArrayList<TextView>(); // Create an ArrayList object
+    ArrayList<ProgressBar> progArr = new ArrayList<ProgressBar>(); // Create an ArrayList object
+    ArrayList<String> name = new ArrayList<String>(); // Create an ArrayList object
+    ArrayList<Integer> number = new ArrayList<Integer>(); // Create an ArrayList object
+    double progPercent = 0.0;
 
 
    // final LinearLayout linLayout = findViewById(R.id.linLayout);
@@ -130,9 +138,20 @@ public class GoalsActivity extends AppCompatActivity {
             }
         });
 
+        for(int i =0; i< 15; i++){      //adding 15 prog bars and text views
+            TextView texttt = new TextView(this);
+            ProgressBar proggg = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+            proggg.setSecondaryProgress(100);
+            proggg.setProgressDrawable(ContextCompat.getDrawable(this, R.drawable.progress_limit));
+            proggg.setMinimumWidth(100);
+
+
+            textArr.add(texttt);
+            progArr.add(proggg);
+        }
+
         //allProgress = findViewById(R.id.progressBarList);
         final int[] i = new int[1];
-        ListView allprogress = (ListView) findViewById(R.id.listView);
 
         titleView = (TextView) findViewById(R.id.titleView); // "goals" title
         titleView = (TextView) findViewById(R.id.calorieText); // "CALORIES" title
@@ -161,13 +180,21 @@ public class GoalsActivity extends AppCompatActivity {
                             currUserID = userDBData.getId();
                             currUserIndex = indexCounter;
                             calGoals = userData.get(currUserIndex).getCalorieGoalsQty();
-                            if (userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty() != NULL) {
-                                currentCals = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
-                            }
+                                if (userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty() != NULL) {
+                                    currentCals = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
+                                }
                             else {
                                 currentCals = 0;
                             }
-
+                            Map<String, Integer> map = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty();
+//                            ArrayList<String> name = new ArrayList<String>(); // Create an ArrayList object
+//                            ArrayList<Integer> number = new ArrayList<Integer>(); // Create an ArrayList object
+//                            ArrayList<TextView> textArr = new ArrayList<TextView>(); // Create an ArrayList object
+//                            ArrayList<ProgressBar> progArr = new ArrayList<ProgressBar>(); // Create an ArrayList object
+                            for (String key: map.keySet()) {
+                                name.add(key);
+                                number.add((Integer) map.get(key));
+                            }
 
                             //if(calGoals != 0 && currentCals != 0) {
                             // horizontal progress bar for calories, but in circular shape
@@ -232,13 +259,24 @@ public class GoalsActivity extends AppCompatActivity {
                             int[] to= {R.id.pbarratio, R.id.pbar};
 
                             // run through each ingredient for tracking
-                            for (int i=0; i<counter; i++){
+                            int x = 0;
+                            LinearLayout linlayout = (LinearLayout) findViewById(R.id.linlayoutGoals);
+                            for (x=0; x<counter; x++){
 //                                System.out.println("Goals in mg is: " + nutrGoal[i]);
 //                                System.out.println("Array of string name is: " + nutrName[i]);
-                                goal = nutrGoal[i];
-                                nutrientName = nutrName[i];
-                                intake = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(nutrName[i]);
+                                goal = nutrGoal[x];
+                                nutrientName = nutrName[x];
+                                intake = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(nutrName[x]);
                                 System.out.println(nutrientName + ": "  + intake + "/" + goal);
+                                textArr.get(x).setText(nutrientName + ": "  + intake + "/" + goal);
+                                Log.d("123",nutrientName + ": "  + intake + "/" + goal);
+                                Log.d("123","Intake is "+intake);
+                                Log.d("123","Goal is "+goal);
+                                progPercent = (double)intake/(double)goal*100;
+                                Log.d("123","ProgPercent "+progPercent);
+                                progArr.get(x).setProgress((int)progPercent);
+                                linlayout.addView(textArr.get(x));
+                                linlayout.addView(progArr.get(x));
 
                             }
 
@@ -250,54 +288,5 @@ public class GoalsActivity extends AppCompatActivity {
         });
         //END: getFirestoreData
 
-        // hardcoded progress bar for first nutrient. Will update dynamically once data pulled from firestore sucessfully
-        tv1=(TextView)findViewById(R.id.pbar1ratio);
-        progressBar1=findViewById(R.id.pbar1);
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                while(progressStatus1<=nutr1goal) {
-                    //update progress bar
-                    hdlr.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar1.setProgress(progressStatus1);
-                            // show progress on TextView
-                            tv1.setText(" Protein: " + progressStatus1 + "/" + nutr1goal + "mg");
-                        }
-                    });
-                    try{
-                        Thread.sleep(16);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
-        // hardcoded progress bar for second nutrient. Will update dynamically once data pulled from firestore sucessfully
-        tv2=(TextView)findViewById(R.id.pbar2ratio);
-        progressBar2=findViewById(R.id.pbar2);
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                while(progressStatus2<=nutr2goal) {
-                    //update progress bar
-                    hdlr.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar2.setProgress(progressStatus2);
-                            // show progress on TextView
-                            tv2.setText(" Vit C: " +progressStatus2 + "/"+ nutr2goal + "mg");
-                        }
-                    });
-                    try{
-                        Thread.sleep(16);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
     }
 }
