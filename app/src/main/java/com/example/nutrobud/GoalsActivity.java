@@ -189,7 +189,7 @@ public class GoalsActivity extends AppCompatActivity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    while (currentCals<=calGoals) {
+                                    while ((currentCals<=calGoals) && (currentCals>=calGoals)) {
                                         //update progress bar and display current value in text view
                                         hdlr.post(new Runnable() {
                                             @Override
@@ -202,6 +202,7 @@ public class GoalsActivity extends AppCompatActivity {
                                             //sleep for 100 ms to show progress slowly
                                             Thread.sleep(16);
                                         } catch(InterruptedException e) {
+                                            e.printStackTrace();
                                             e.printStackTrace();
                                         }
                                     }
