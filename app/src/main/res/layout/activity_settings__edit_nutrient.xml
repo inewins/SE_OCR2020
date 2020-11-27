@@ -5,12 +5,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:background="#C4FAB8"
     android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".EditAllergen">
+
+        <Button
+            android:id="@+id/back2SettingBtn3"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="45dp"
+            android:layout_height="41dp"
+            android:drawableLeft="@android:drawable/ic_menu_revert"
+            android:textSize="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/NutTextView"
@@ -47,6 +58,7 @@
             android:text="Current Nutrients Tracked"
             android:textSize="22sp"
             android:verticalScrollbarPosition="left"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
