@@ -210,35 +210,31 @@ public class WeekActivity extends AppCompatActivity {
 
                                         System.out.println(nutrientName + ": " + intake + " mg");
                                         // if nutrient intake is detected, add to previous intake to get total intake for week
-                                        if (nutrientName == "sodium") {
+                                        if (nutrientName.equals("sodium")) {
                                             sodium = sodium + intake;
                                         }
-                                        if (nutrientName == "fiber") {
+                                        if (nutrientName.equals("fiber")) {
                                             fiber = fiber + intake;
                                         }
-                                        if (nutrientName == "protein") {
+                                        if (nutrientName.equals("protein")) {
                                             protein = protein + intake;
                                         }
-                                        if (nutrientName == "fat") {
+                                        if (nutrientName.equals("fat")) {
                                             fat = fat + intake;
                                         }
-                                        if (nutrientName == "sugar") {
+                                        if (nutrientName.equals("sugar")) {
                                             sugar = sugar + intake;
                                         }
-                                        if (nutrientName == "carbohydrate") {
+                                        if (nutrientName.equals("carbohydrate")) {
                                             carbs = carbs + intake;
                                         }
                                     }
                                     else {
                                         intake = 0;
                                     }
-
                                 }
-
-                                System.out.println("total carbs: " + carbs);
+                                System.out.println("total carbs: " + carbs); // delete later
                             }
-
-
                         }
                     }
                     dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
