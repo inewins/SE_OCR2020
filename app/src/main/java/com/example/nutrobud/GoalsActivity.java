@@ -52,25 +52,15 @@ import static java.sql.Types.NULL;
 
 public class GoalsActivity extends AppCompatActivity {
     Button b2Dashbtn;
+    TextView titleView, ratio, noDataText;
 
     //nutrient progress bars
-    TextView tv1,tv2;
-    private ProgressBar progressBar1, progressBar2, progressBar3;
-    int progressStatus1=70, progressStatus2=10; // hardcoded for now- working on retrieving data from database
-    int nutr1goal=100;
-    int nutr2goal=100;
-    int progressStatus;
+    //private ProgressBar;
+
     int[] nutrGoal;
-    String[] nutritionGoal;
     public String nutrientName;
-    public String temp = "";
-    String[] text;
-    int[] bar;
-    //Set<milliName>;
     String [] nutrName;
-    int [] nutrAmount;
     int counter=0;
-    int milligrams;
     int intake;
     int goal;
     ArrayList<TextView> textArr = new ArrayList<TextView>(); // Create an ArrayList object
@@ -78,12 +68,6 @@ public class GoalsActivity extends AppCompatActivity {
     ArrayList<String> name = new ArrayList<String>(); // Create an ArrayList object
     ArrayList<Integer> number = new ArrayList<Integer>(); // Create an ArrayList object
     double progPercent = 0.0;
-
-
-   // final LinearLayout linLayout = findViewById(R.id.linLayout);
-
-    TextView titleView;
-    TextView ratio;
 
     //goal calorie progress
     int currentCals;
@@ -109,6 +93,7 @@ public class GoalsActivity extends AppCompatActivity {
     private int currUserIndex;
     private FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
 
+    // convert set from hashmap to string array
     public static String[] convert(Set<String> setofString){
         // create String[] of size of setOfString
         String[] arrayOfString = new String[setofString.size()];
@@ -138,6 +123,7 @@ public class GoalsActivity extends AppCompatActivity {
             }
         });
 
+       // hardcode progress bars to dynamically add
         for(int i =0; i< 15; i++){      //adding 15 prog bars and text views
             TextView texttt = new TextView(this);
             ProgressBar proggg = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
@@ -145,12 +131,10 @@ public class GoalsActivity extends AppCompatActivity {
             proggg.setProgressDrawable(ContextCompat.getDrawable(this, R.drawable.progress_limit));
             proggg.setMinimumWidth(100);
 
-
             textArr.add(texttt);
             progArr.add(proggg);
         }
 
-        //allProgress = findViewById(R.id.progressBarList);
         final int[] i = new int[1];
 
         titleView = (TextView) findViewById(R.id.titleView); // "goals" title
@@ -180,23 +164,19 @@ public class GoalsActivity extends AppCompatActivity {
                             currUserID = userDBData.getId();
                             currUserIndex = indexCounter;
                             calGoals = userData.get(currUserIndex).getCalorieGoalsQty();
+                            // check if data exists for current date and calories tracked
+                            if ((userData.get(currUserIndex).getStats().get(todayDate) != null)) {
                                 if (userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty() != NULL) {
                                     currentCals = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
                                 }
+                                else {
+                                    currentCals = 0;
+                                }
+                            }
                             else {
                                 currentCals = 0;
                             }
-                            Map<String, Integer> map = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty();
-//                            ArrayList<String> name = new ArrayList<String>(); // Create an ArrayList object
-//                            ArrayList<Integer> number = new ArrayList<Integer>(); // Create an ArrayList object
-//                            ArrayList<TextView> textArr = new ArrayList<TextView>(); // Create an ArrayList object
-//                            ArrayList<ProgressBar> progArr = new ArrayList<ProgressBar>(); // Create an ArrayList object
-                            for (String key: map.keySet()) {
-                                name.add(key);
-                                number.add((Integer) map.get(key));
-                            }
 
-                            //if(calGoals != 0 && currentCals != 0) {
                             // horizontal progress bar for calories, but in circular shape
                             Drawable drawable = res.getDrawable(R.drawable.circular);
                             final ProgressBar mProgress = (ProgressBar) findViewById(R.id.calProgressBar);
@@ -226,60 +206,89 @@ public class GoalsActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                 }).start();
-                           // }
+                            }).start();
 
-                            // access elements of hashmap
-                            ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
+                            // check if data exists for current date ****************
+                            if ((userData.get(currUserIndex).getStats().get(todayDate) != null)) {
+                                // check if user has inputted ingredients to track *********************
+                                if (userData.get(currUserIndex).getIngredientsYes() != null) {
+                                    // create new arrays for ingredientsYes and respective goal intake
+                                    nutrGoal = new int[userData.get(currUserIndex).getIngredientsYes().size()];
+                                    nutrName = new String[userData.get(currUserIndex).getIngredientsYes().size()];
+                                    if (userData.get(currUserIndex).getIngredientsYes().size() != 0) {
+                                        for (int i = 0; i < userData.get(currUserIndex).getIngredientsYes().size(); i++) {
+                                            nutrGoal[i] = Integer.parseInt(userData.get(currUserIndex).getIngredientsYesGoalsQty().get(i));
+                                            counter++;
+                                        }
+                                    }
 
-                            nutrGoal = new int[userData.get(currUserIndex).getIngredientsYes().size()];
-                            nutrName = new String[userData.get(currUserIndex).getIngredientsYes().size()];
-                            if (userData.get(currUserIndex).getIngredientsYes().size() != 0) {
-                                for(int i = 0; i < userData.get(currUserIndex).getIngredientsYes().size() ; i++){
-                                    //nutrientName = userData.get(currUserIndex).getIngredientsYes().get(i);
-//                                    progressStatus = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(i);
-                                    nutrGoal[i] = Integer.parseInt(userData.get(currUserIndex).getIngredientsYesGoalsQty().get(i));
-//                                    nutrName[i]= userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(key);
-                                    counter++;
+                                    // check if ingredients have been tracked for date *******************
+                                    if (userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty() != null) {
+                                        Map<String, Integer> map = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty();
+                                        for (String key : map.keySet()) {
+                                            name.add(key);
+                                            number.add((Integer) map.get(key));
+                                        }
+
+                                        // get names of ingredients tracked
+                                        Set<String> milliName = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().keySet(); // set keys to Set
+                                        nutrName = convert(milliName); //convert to string array
+                                        System.out.println("Array of string: " + Arrays.toString(nutrName)); // delete later
+                                        System.out.println("Counter is: " + counter); // delete later
+                                        System.out.println("Size is: " + userData.get(currUserIndex).getIngredientsYes().size()); // delete later
+
+                                        // run through each ingredient for tracking and dynamically add
+                                        int x = 0;
+                                        LinearLayout linlayout = (LinearLayout) findViewById(R.id.linlayoutGoals);
+                                        for (x = 0; x < counter; x++) {
+                                            goal = nutrGoal[x];
+                                            nutrientName = nutrName[x];
+                                            intake = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(nutrName[x]);
+                                            System.out.println(nutrientName + ": " + intake + "/" + goal);
+                                            textArr.get(x).setText(nutrientName + ": " + intake + "/" + goal);
+                                            Log.d("123", nutrientName + ": " + intake + "/" + goal);
+                                            Log.d("123", "Intake is " + intake);
+                                            Log.d("123", "Goal is " + goal);
+                                            progPercent = (double) intake / (double) goal * 100;
+                                            Log.d("123", "ProgPercent " + progPercent);
+                                            progArr.get(x).setProgress((int) progPercent);
+                                            linlayout.addView(textArr.get(x));
+                                            linlayout.addView(progArr.get(x));
+                                        }
+                                    }
+                                    // if user has ingredients to track but no scans for the date
+                                    else {
+                                        // run through each ingredient for tracking
+                                        int x = 0;
+                                        LinearLayout linlayout = (LinearLayout) findViewById(R.id.linlayoutGoals);
+                                        for (x = 0; x < counter; x++) {
+                                            goal = nutrGoal[x];
+                                            nutrientName = nutrName[x];
+                                            intake = 0;
+                                            System.out.println(nutrientName + ": " + intake + "/" + goal);
+                                            textArr.get(x).setText(nutrientName + ": " + intake + "/" + goal);
+                                            Log.d("123", nutrientName + ": " + intake + "/" + goal);
+                                            Log.d("123", "Intake is " + intake);
+                                            Log.d("123", "Goal is " + goal);
+                                            progPercent = (double) intake / (double) goal * 100;
+                                            Log.d("123", "ProgPercent " + progPercent);
+                                            progArr.get(x).setProgress((int) progPercent);
+                                            linlayout.addView(textArr.get(x));
+                                            linlayout.addView(progArr.get(x));
+                                        }
+                                    }
+                                }
+                                // if user has not entered any ingredients to track
+                                else {
+                                    noDataText = (TextView) findViewById(R.id.noDataDisplay);
+                                    noDataText.setText("Ingredients to track have not been specified.");
                                 }
                             }
-                            // get names of ingredients tracked
-                            Set<String> milliName = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().keySet(); // set keys to Set
-                            nutrName = convert(milliName); //convert to string array
-                            System.out.println("Array of string: " + Arrays.toString(nutrName));
-
-
-
-                            System.out.println("Counter is: " + counter);
-                            System.out.println("Size is: " + userData.get(currUserIndex).getIngredientsYes().size());
-
-
-
-                            String[] from = {"text", "bar"};
-                            int[] to= {R.id.pbarratio, R.id.pbar};
-
-                            // run through each ingredient for tracking
-                            int x = 0;
-                            LinearLayout linlayout = (LinearLayout) findViewById(R.id.linlayoutGoals);
-                            for (x=0; x<counter; x++){
-//                                System.out.println("Goals in mg is: " + nutrGoal[i]);
-//                                System.out.println("Array of string name is: " + nutrName[i]);
-                                goal = nutrGoal[x];
-                                nutrientName = nutrName[x];
-                                intake = userData.get(currUserIndex).getStats().get(todayDate).getIngredientsYesTrackedQty().get(nutrName[x]);
-                                System.out.println(nutrientName + ": "  + intake + "/" + goal);
-                                textArr.get(x).setText(nutrientName + ": "  + intake + "/" + goal);
-                                Log.d("123",nutrientName + ": "  + intake + "/" + goal);
-                                Log.d("123","Intake is "+intake);
-                                Log.d("123","Goal is "+goal);
-                                progPercent = (double)intake/(double)goal*100;
-                                Log.d("123","ProgPercent "+progPercent);
-                                progArr.get(x).setProgress((int)progPercent);
-                                linlayout.addView(textArr.get(x));
-                                linlayout.addView(progArr.get(x));
-
+                            // if data does not exist for date, but user specifies ingredients to track
+                            else{
+                                noDataText = (TextView) findViewById(R.id.noDataDisplay);
+                                noDataText.setText("No ingredients have been tracked. Please scan nutrition label to view intake goal.");
                             }
-
                         }
                     }
                     dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
