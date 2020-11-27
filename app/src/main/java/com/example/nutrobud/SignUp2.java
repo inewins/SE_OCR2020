@@ -50,7 +50,7 @@ public class SignUp2 extends AppCompatActivity {
         if(user.getWeight() != -1)
         {
             //Set the previously entered weight
-            weight.setText(Integer.toString(user.getWeight()), TextView.BufferType.EDITABLE);
+            weight.setText(Double.toString(user.getWeight()), TextView.BufferType.EDITABLE);
         }
         //Check if a list of unwanted ingredients has already been entered
         if(user.getIngredientsNo() != null)
