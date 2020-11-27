@@ -4,46 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatisticsActivity"
-    android:background="#000">
+    android:background="#FFFF"
+    tools:context=".StatisticsActivity">
 
     <TextView
         android:id="@+id/statsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Statistics"
-        android:textColor="#FFFF"
+        android:text="What would you like to see the statistics for?"
+        android:textColor="#000"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.218" />
 
-    <TextView
-        android:id="@+id/date_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:inputType="date"
-        android:textColor="#FFFF"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weekButton"
-        app:layout_constraintVertical_bias="0.025" />
 
     <Button
         android:id="@+id/backToDashButton"
         android:layout_width="54dp"
         android:layout_height="32dp"
-        android:background="#7863AC"
+        android:background="#0FA615"
         android:text="Back"
-        android:textColor="#FFFF"
+        android:textColor="#000"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,28 +39,28 @@
 
     <Button
         android:id="@+id/dayButton"
-        android:layout_width="182dp"
-        android:layout_height="17dp"
-        android:background="#0D7987"
+        android:layout_width="198dp"
+        android:layout_height="57dp"
+        android:background="#0FA615"
         android:text="DAY"
-        android:textColor="#FFFF"
-        app:layout_constraintBaseline_toBaselineOf="@+id/weekButton"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/weekButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statsTitle" />
 
     <Button
         android:id="@+id/weekButton"
-        android:layout_width="182dp"
-        android:layout_height="17dp"
-        android:layout_marginTop="40dp"
-        android:background="#98B6BA"
+        android:layout_width="198dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="212dp"
+        android:background="#0FA615"
         android:text="WEEK"
-        android:textColor="#FFFF"
+        android:textColor="#000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.238"
-        app:layout_constraintStart_toEndOf="@+id/dayButton"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statsTitle"
         app:layout_constraintVertical_bias="0.0" /><![CDATA[
 

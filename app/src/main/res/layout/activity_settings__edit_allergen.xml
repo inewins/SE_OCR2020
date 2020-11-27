@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:background="#C4FAB8"
     android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,20 +13,30 @@
         android:layout_height="match_parent"
         tools:context=".EditAllergen">
 
+        <Button
+            android:id="@+id/back2SettingBtn2"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="64dp"
+            android:layout_height="29dp"
+            android:textSize="8dp"
+            android:text="Back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/navEmail"
             android:layout_width="275dp"
-            android:layout_height="38dp"
+            android:layout_height="45dp"
             android:layout_marginTop="28dp"
             android:autoText="false"
-            android:background="#C4616161"
             android:gravity="center_horizontal"
-            android:text="Current Allergens"
-            android:textSize="25sp"
+            android:text="Current Allergens/Avoided Ingredients"
+            android:textSize="18sp"
             android:verticalScrollbarPosition="left"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#41AF2D"/>
 
         <ScrollView
             android:id="@+id/scrollView2"
@@ -34,7 +45,9 @@
             android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toBottomOf="@+id/navEmail"
+            android:background="#41AF2D">
+
 
             <LinearLayout
                 android:id="@+id/linLayout"
@@ -46,28 +59,41 @@
 
         <EditText
             android:id="@+id/editAllergenText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:focusable="auto"
             android:gravity="center_horizontal"
             android:hint="Enter Allergen"
             android:inputType="textPersonName"
             android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="@+id/scrollView2"
             app:layout_constraintStart_toStartOf="@+id/scrollView2"
             app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
         <Button
             android:id="@+id/addBtn"
+            android:layout_width="75dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
+            android:text="Add"
+            app:layout_constraintBottom_toBottomOf="@+id/editAllergenText"
+            app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/editAllergenText"
+            android:background="#4FDD35"/>
+
+        <Button
+            android:id="@+id/subBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
-            android:layout_marginEnd="100dp"
-            android:text="Add"
-            app:layout_constraintEnd_toEndOf="@+id/editAllergenText"
-            app:layout_constraintTop_toBottomOf="@+id/editAllergenText" />
+            android:layout_marginTop="108dp"
+            android:text="Submit"
+            app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/scrollView2"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+            android:background="#4FDD35"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -22,14 +22,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Settings_EditProfile extends AppCompatActivity {
-    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10002"); //to get reference to users data
+    private DocumentReference dr;
     private Map<String, Object> user = new HashMap<String, Object>();
     EditText first, last, age, weight;
+    String userID, lname, fname;
+    int sage, sweight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__edit_profile);
+
+        first = findViewById(R.id.editFirstName);                                                   //Get id of all text view
+        last = findViewById(R.id.editLastName);
+        age = findViewById(R.id.editAge);
+        weight = findViewById(R.id.editWeight);
+
 
         Button btn2GoBack = (Button)findViewById(R.id.back2SettingBtn);                                     //Button to go to back to Settings_Main
         btn2GoBack.setOnClickListener(new View.OnClickListener() {
@@ -38,15 +46,27 @@ public class Settings_EditProfile extends AppCompatActivity {
                 startActivity(new Intent(Settings_EditProfile.this, Settings_Main.class));
             }
         });
-
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+        if(b!=null)
+        {
+//            Log.d("HELP","HHHHH"+(String)b.get("fname"));
+            userID = (String) b.get("userID");
+            lname = (String) b.get("lname");
+            fname = (String) b.get("fname");
+            sage = (int) b.get("age");
+            sweight = (int) b.get("weight");
+            first.setText(fname);
+            last.setText(lname);
+            age.setText(sage+"");
+            weight.setText(sweight+"");
+        }
+        dr = FirebaseFirestore.getInstance().document("users/"+userID); //to get reference to users data
         Button submit = (Button)findViewById(R.id.submitBtn);                                               //Button to upload to database
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                first = findViewById(R.id.editFirstName);                                                   //Get id of all text view
-                last = findViewById(R.id.editLastName);
-                age = findViewById(R.id.editAge);
-                weight = findViewById(R.id.editWeight);
+
 
 
                 if (!first.getText().toString().isEmpty())                                                  //if field is NOT empty, add to hashmap

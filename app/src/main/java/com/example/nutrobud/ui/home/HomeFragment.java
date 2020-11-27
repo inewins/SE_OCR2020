@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,10 +38,16 @@ import com.example.nutrobud.CalendarActivity;
 import com.example.nutrobud.DashActivity;
 import com.example.nutrobud.GoalsActivity;
 import com.example.nutrobud.R;
+import com.example.nutrobud.SignUpLoginInfo;
 import com.example.nutrobud.StatisticsActivity;
 import com.example.nutrobud.ui.objectPassEx.Act1;
+import com.example.nutrobud.ui.scanResult.ScanHelper;
+import com.example.nutrobud.ui.scanResult.ScanResult;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,6 +67,7 @@ import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,15 +98,26 @@ public class HomeFragment<i> extends Fragment {
     boolean proteinScanStatus = false;
     boolean carbsScanStatus = false;
     boolean fatScanStatus = false;
+    boolean fiberScanStatus = false;
+    boolean sugarScanStatus = false;
 
     //Firebase Cloud Firestore Gang
     private Map<String, Object> user = new HashMap<String, Object>(); //User obj will be wrapped into this map to be posted
     private Map<String, Stats> statsMapObj = new HashMap<String, Stats>();//Stats obj will be wrapped into this map to be added into User
     private Map<String, Integer> nutrients = new HashMap<String, Integer>();//Stats.nutrients will be wrapped into this map to be added to Stats
+    private Map<String, Integer> ingYesTrackedQty = new HashMap<String, Integer>();
     private Stats statsObj = new Stats();
     private User userDBData;
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();//Firestore ref to pull user data
-    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10001");//Document ref to post data
+    private DocumentReference dr;
+
+
+    //Firebase Auth Gang
+    private FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+    private int currUserID;
+    private int currUserIndex;
+
+    private ScanHelper scanHelper = new ScanHelper();
 
     //List where pulled data will be kept on a per index basis
     private List<User> userData = new ArrayList<>();
@@ -106,7 +126,10 @@ public class HomeFragment<i> extends Fragment {
     private String todayDate = formatter.format(new Date());
 
     //hardcoded allergen array, for now. Will be dynamically pulled from Firestore in near future.
-    String[] allergens = {"citric acid", "folic acid"};
+    String[] allergens;
+    String[] scannables = {"calories","carbohydrate", "protein", "fat", "sodium", "sugar", "fiber"};
+    boolean[] scannablesStatus ={false, false, false, false, false, false, false};
+    String[] detectedAllergens;
 
     private int countClicks = 0;
 
@@ -154,10 +177,24 @@ public class HomeFragment<i> extends Fragment {
             public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
                 if(!queryDocumentSnapshot.isEmpty()){
                     List<DocumentSnapshot> userDBDataList = queryDocumentSnapshot.getDocuments();
+                    int indexCounter=-1;
                     for(DocumentSnapshot d: userDBDataList){
+                        indexCounter++;
                         userDBData = d.toObject(User.class);
                         userData.add(userDBData);
+                        if(userDBData.getEmail().equalsIgnoreCase(currUser.getEmail())){
+                            currUserID = userDBData.getId();
+                            currUserIndex = indexCounter;
+                            allergens = new String[userDBData.getIngredientsNo().size()];
+                            int i=0;
+                            for(String s: userDBData.getIngredientsNo()){
+                                allergens[0] = s;
+                                i++;
+                            }
+                            detectedAllergens = new String[userDBData.getIngredientsNo().size()];
+                        }
                     }
+                    dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
                 }
             }
         });
@@ -174,7 +211,8 @@ public class HomeFragment<i> extends Fragment {
         calendarBtn = (Button) getView().findViewById(R.id.calendarBtn);
         goalsBtn = (Button) getView().findViewById(R.id.goalsBtn);
         statisticsBtn = (Button) getView().findViewById(R.id.statisticsBtn);
-        secretBtn = (Button) getView().findViewById(R.id.secretBtn);
+
+
 
         imageView = (ImageView) getView().findViewById(R.id.imageView);
         if(Build.VERSION.SDK_INT >=23){
@@ -216,19 +254,6 @@ public class HomeFragment<i> extends Fragment {
                 startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
             }
         });
-
-        secretBtn.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View view) {
-                countClicks++;
-                if(countClicks==5){
-                    startActivity(new Intent(getApplicationContext(), Act1.class));
-                }
-            }
-        });
-
-
     }
 
     //Whenever the user is done taking a picture:
@@ -240,6 +265,8 @@ public class HomeFragment<i> extends Fragment {
         proteinScanStatus = false;
         carbsScanStatus = false;
         fatScanStatus = false;
+        fiberScanStatus = false;
+        sugarScanStatus = false;
         if(resultCode == RESULT_OK){
             if(requestCode == 1){
                 Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
@@ -264,7 +291,6 @@ public class HomeFragment<i> extends Fragment {
                                         e.printStackTrace();
                                     }
                                 });
-
                 //For debugging purposes: - sahajamatya - 11/01
                 System.out.println("This is the bitmap reference: "+bitmap);
                 System.out.println("This is the path to file: "+pathToFile);
@@ -286,45 +312,50 @@ public class HomeFragment<i> extends Fragment {
         //text search algorithm
         for (int i = 0; i < blocks.size(); i++) {
             String textBlock = blocks.get(i).getText();
-            searchHelper(textBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
-            //searchHelper helps search for the param values inside textBlock
+            int j = 0;
+            for(String scannable: scannables){
+                searchNutrients(textBlock, scannable, scannablesStatus[j]);
+                j++;
+            }
+            searchAllergens(textBlock);
         }
 
         //Setting data in the Firestore DB after done searching
         //setFirestoreData
         user.put("stats", statsMapObj);
+        //CREATE NEW VAR TO STORE VALUES BEFORE ADDITION WITH PREV VALS
+
+
+        scanHelper.setId(currUserID);
         dr.set(user, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                Intent i = new Intent(getApplicationContext(), ScanResult.class);
+                i.putExtra("userMap", scanHelper);
+                startActivity(i);
             }
         });
+        //pass to other function
         //END: setFirestoreData
-    }
-
-    public void searchHelper(String textBlock, String calories, String sodium, String protein, String carbs, String fat){
-        searchNutrients(textBlock, calories, caloriesScanStatus);
-        searchNutrients(textBlock, sodium, sodiumScanStatus);
-        searchNutrients(textBlock, protein, proteinScanStatus);
-        searchNutrients(textBlock, carbs, carbsScanStatus);
-        searchNutrients(textBlock, fat, fatScanStatus);
-
-        searchAllergens(textBlock);
     }
 
     public void searchAllergens(String textBlock){
         for(String s: allergens){
-            if(textBlock.toLowerCase().contains(s) && !memo.contains(s)){
-                System.out.println("ALLERGEN DETECTED: "+ s.toUpperCase());
-                memo+=s+',';
+            if(s!=null) {
+                if (textBlock.toLowerCase().contains(s) && !memo.contains(s)) {
+                    System.out.println("ALLERGEN DETECTED: " + s.toUpperCase());
+                    detectedAllergens = ArrayUtils.appendToArray(detectedAllergens, s);
+                    memo += s + ',';
+                }
             }
         }
+        scanHelper.setDetectedAllergens(detectedAllergens);
     }
 
     public void searchNutrients(String textBlock, final String entityToSearch, boolean scanStatus){
         String entityQty;
 
-        if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus){
+        if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus && fiberScanStatus && sugarScanStatus){
             return;
         }
 
@@ -344,43 +375,77 @@ public class HomeFragment<i> extends Fragment {
             int trackedProtein = 0;
             int trackedSodium =0;
             int trackedFat = 0;
+            int trackedFiber = 0;
+            int trackedSugar = 0;
 
             //check if it's already recorded today
-            if(userData.get(0).getStats().containsKey(todayDate)){
+            if(userData.get(currUserIndex).getStats().containsKey(todayDate)){
                 //the following are values fetched from the database so that new data can be added to them
-                trackedCalories = userData.get(0).getStats().get(todayDate).getCaloriesTrackedQty();
-                trackedCarbohydrate = userData.get(0).getStats().get(todayDate).getNutrients().get("carbohydrate");
-                trackedProtein = userData.get(0).getStats().get(todayDate).getNutrients().get("protein");
-                trackedSodium = userData.get(0).getStats().get(todayDate).getNutrients().get("sodium");
-                trackedFat = userData.get(0).getStats().get(todayDate).getNutrients().get("fat");
+                trackedCalories = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
+                trackedCarbohydrate = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("carbohydrate");
+                trackedProtein = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("protein");
+                trackedSodium = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("sodium");
+                trackedFat = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("fat");
+                trackedFiber = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("fiber");
+                trackedSugar = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("sugar");
             }
 
             if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
                 statsObj.setCaloriesTrackedQty(trackedCalories + entityQtyNum);
+                scanHelper.setCaloriesTrackedQty(entityQtyNum);
                 caloriesScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("sodium") && !sodiumScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedSodium + entityQtyNum);
+                    scanHelper.setSodium(entityQtyNum);
                 }
                 sodiumScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("protein") && !proteinScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedProtein + entityQtyNum);
+                    scanHelper.setProtein(entityQtyNum);
                 }
                 proteinScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("carbohydrate") && !carbsScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedCarbohydrate + entityQtyNum);
+                    scanHelper.setCarbohydrate(entityQtyNum);
                 }
                 carbsScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("fat") && !fatScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedFat + entityQtyNum);
+                    scanHelper.setFat(entityQtyNum);
                 }
                 fatScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("fiber") && !fiberScanStatus){
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), trackedFiber + entityQtyNum);
+                    scanHelper.setFiber(entityQtyNum);
+                }
+                fiberScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("sugar") && !sugarScanStatus){
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), trackedSugar + entityQtyNum);
+                    scanHelper.setSugar(entityQtyNum);
+                }
+                sugarScanStatus = true;
             }
+
+            if(userData.get(currUserIndex).getIngredientsYes().contains(entityToSearch)){
+                ingYesTrackedQty.put(entityToSearch, trackedStatsQty(entityToSearch)+entityQtyNum);
+            }
+            statsObj.setIngredientsYesTrackedQty(ingYesTrackedQty);
             statsObj.setNutrients(nutrients);
             statsMapObj.put(todayDate, statsObj);
+        }
+    }
+
+    public int trackedStatsQty(String entity){
+        if(userData.get(currUserIndex).getStats().containsKey(todayDate)){
+            return userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get(entity);
+        } else {
+            return 0;
         }
     }
 

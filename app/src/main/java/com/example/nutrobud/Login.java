@@ -50,6 +50,7 @@ public class Login extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
 
+
         fAuthStateLister = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -65,8 +66,9 @@ public class Login extends AppCompatActivity {
         };
 
         //If there is already a user active through authenticator, they will be automatically logged in
-       /*if(fAuth.getCurrentUser() != null)
-            startActivity(new Intent(getApplicationContext(), DashActivity.class));*/
+       if(fAuth.getCurrentUser() != null)
+           startActivity(new Intent(getApplicationContext(), DashActivity.class));
+
        
 
         loginbtn.setOnClickListener(new View.OnClickListener() {

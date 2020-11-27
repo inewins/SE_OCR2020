@@ -8,122 +8,113 @@
 
     <TextView
         android:id="@+id/text_contact6"
-        android:layout_width="384dp"
-        android:layout_height="105dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="305dp"
+        android:layout_height="131dp"
         android:text="Should you have any questions or concerns regarding NutroBud, please feel free to reach us any way you find convenient."
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <TextView
         android:id="@+id/text_contactEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="20sp"
+        android:textColor="#000000"
         android:textColorLink="#0064a7"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.659"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintHorizontal_bias="0.301"
+        app:layout_constraintStart_toEndOf="@+id/text_contact"
+        app:layout_constraintTop_toBottomOf="@+id/text_contact6"
+        app:layout_constraintVertical_bias="0.114" />
 
     <TextView
         android:id="@+id/text_contact3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="Call us:"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_contactPhone2"
-        app:layout_constraintHorizontal_bias="0.148"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_contact"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.074" />
 
     <TextView
         android:id="@+id/text_contact8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Write to us:"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_contact3"
-        app:layout_constraintVertical_bias="0.129" />
+        app:layout_constraintVertical_bias="0.261" />
 
     <TextView
         android:id="@+id/text_contact9"
         android:layout_width="239dp"
         android:layout_height="57dp"
-        android:layout_marginEnd="8dp"
         android:text="1234 NutroBud Ln Arlington, TX, 76013"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.243"
         app:layout_constraintStart_toEndOf="@+id/text_contact8"
         app:layout_constraintTop_toBottomOf="@+id/text_contactPhone1"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintVertical_bias="0.137" />
 
     <TextView
         android:id="@+id/text_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Email us:"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_contactEmail"
-        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.106"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintTop_toBottomOf="@+id/text_contact6"
+        app:layout_constraintVertical_bias="0.114" />
 
     <TextView
         android:id="@+id/text_contactPhone1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="20sp"
+        android:textColor="#000000"
         android:textColorLink="#0064a7"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397" />
+        app:layout_constraintTop_toBottomOf="@+id/text_contactPhone2"
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:id="@+id/text_contactPhone2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:textSize="20sp"
+        android:textColor="#000000"
         android:textColorLink="#0064a7"
-        app:layout_constraintBottom_toTopOf="@+id/text_contactPhone1"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.335"
+        app:layout_constraintStart_toEndOf="@+id/text_contact3"
         app:layout_constraintTop_toBottomOf="@+id/text_contactEmail"
-        app:layout_constraintVertical_bias="0.586" />
+        app:layout_constraintVertical_bias="0.072" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
