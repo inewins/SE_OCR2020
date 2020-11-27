@@ -116,7 +116,7 @@
         app:layout_constraintVertical_bias="0.502"></LinearLayout>
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/Instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tap on a nutrient or vitamin to set a daily intake goal"

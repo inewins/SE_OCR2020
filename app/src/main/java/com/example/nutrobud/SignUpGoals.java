@@ -28,7 +28,7 @@ import java.util.List;
 public class SignUpGoals extends AppCompatActivity {
 
     EditText goaltext, daily_cal_text;
-    TextView nvview;
+    TextView nvview, instruct;
     LinearLayout linlayout;
     Button savebtn, cancelbtn, reviewbtn, backbtn;
     PopupWindow goalPopUp;
@@ -46,10 +46,16 @@ public class SignUpGoals extends AppCompatActivity {
         daily_cal_text = findViewById(R.id.Daily_Cal_Text);
         reviewbtn = findViewById(R.id.ReviewBtn);
         backbtn = findViewById(R.id.BackBtn);
+        instruct = findViewById(R.id.Instructions);
+
+        instruct.setVisibility(View.INVISIBLE);
 
         //Get user's wanted list of vitamins and nutrients
         final List<String> ingredient_yes = user.getIngredientsYes();
         final ArrayList<Integer> ing_goals_yes = new ArrayList<Integer>();
+
+        if(ingredient_yes.size() != 0)
+            instruct.setVisibility(View.VISIBLE);
 
         //Check if the user already has goals set
         if(user.getIngredientsYesGoalsQty() == null) {
