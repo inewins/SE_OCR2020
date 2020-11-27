@@ -87,7 +87,7 @@
         android:layout_below="@id/calProgressBar"
         android:layout_alignLeft="@+id/calProgressBar"
         android:gravity="center_horizontal"
-        android:text="25%"
+
         android:textColor="#000"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"

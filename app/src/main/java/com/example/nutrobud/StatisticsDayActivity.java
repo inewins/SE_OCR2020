@@ -189,7 +189,7 @@ public class StatisticsDayActivity extends AppCompatActivity {
                             else {
                                 noData=(TextView) findViewById(R.id.noDataDisplay);
                                 noData.setText("No data is available. Please scan nutrition label to view nutritional statistics!");
-
+                                pic=(ImageView) findViewById(R.id.picture);
                             }
                         }
                     }
