@@ -38,8 +38,8 @@
 
     <ListView
         android:id="@+id/statsView"
-        android:layout_width="321dp"
-        android:layout_height="41dp"
+        android:layout_width="349dp"
+        android:layout_height="359dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,27 +51,17 @@
 
     <TextView
         android:id="@+id/noDataDisplay"
-        android:layout_width="271dp"
-        android:layout_height="72dp"
+        android:layout_width="252dp"
+        android:layout_height="78dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.21" />
+        app:layout_constraintVertical_bias="0.81" /><![CDATA[
 
-    <ImageView
-        android:id="@+id/picture"
-        android:layout_width="251dp"
-        android:layout_height="241dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.562"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noDataDisplay"
-        app:layout_constraintVertical_bias="0.201"
-        app:srcCompat="@drawable/nutrobudpic" /><![CDATA[
+
 
     "center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,5 +70,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.076" />
+
 ]]>
 </androidx.constraintlayout.widget.ConstraintLayout>
