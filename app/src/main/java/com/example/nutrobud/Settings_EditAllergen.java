@@ -23,10 +23,6 @@ import java.util.Map;
 /*
    DISCLAIMER, CODE WRITTEN ON THIS FILE WAS PARTIALLY TAKEN FROM LYDIA SARVER
 */
-//class allergenData{
-//    int index;
-//    String data="";
-//}
 public class Settings_EditAllergen extends AppCompatActivity {
     List<String> ingredient_no = new ArrayList<>();    //initializing variables
     private DocumentReference dr;
