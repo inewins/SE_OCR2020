@@ -7,6 +7,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 import android.content.Intent;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.content.Intent;
@@ -25,6 +32,7 @@ import java.util.ArrayList;
 import android.widget.LinearLayout;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,12 +69,19 @@ public class WeekActivity extends AppCompatActivity {
     int counter2=0;
 
 
+    // create expandable listview
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+
     // get calendar dates
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
     private String firstDate = formatter.format(new Date());
     private String lastDate = formatter.format(new Date());
     private SimpleDateFormat displayStartFormat;
     private SimpleDateFormat displayEndFormat;
+    SimpleDateFormat newFormat = new SimpleDateFormat("MMMM d");
 
     // get data from Firestore
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
@@ -101,6 +116,9 @@ public class WeekActivity extends AppCompatActivity {
         statsTitle=(TextView) findViewById(R.id.statsTitle);
         backButton=(Button)findViewById(R.id.backButton);
         weekDisplayView = (TextView) findViewById(R.id.weekView);
+
+        // get the listview
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // back button activity
         backButton=(Button)findViewById(R.id.backButton);
@@ -189,6 +207,10 @@ public class WeekActivity extends AppCompatActivity {
                             System.out.println("string array: " + datesArray[0]); // delete later
                             System.out.println("num array: " + Arrays.toString(validDates)); // delete later
 
+                            // prepare list data
+                            listDataHeader = new ArrayList<String>();
+                            listDataChild = new HashMap<String, List<String>>();
+
                             // go through each valid date and check for nutrients tracked
                             for(int i=0; i<counter; i++) {
                                 // get names of ingredients tracked
@@ -234,6 +256,108 @@ public class WeekActivity extends AppCompatActivity {
                                     }
                                 }
                                 System.out.println("total carbs: " + carbs); // delete later
+                                // adding child data to list
+                                listDataHeader.add("SODIUM: " + sodium + " mg");
+                                listDataHeader.add("FIBER: " + fiber + " mg");
+                                listDataHeader.add("PROTEIN: " + protein + " mg");
+                                listDataHeader.add("FAT: " + fat + " mg");
+                                listDataHeader.add("SUGAR: " + sugar + " mg");
+                                listDataHeader.add("CARBOHYDRATE: " + carbs + " mg");
+
+                                // add child data
+                                List<String> SODIUM = new ArrayList<String>();
+                                List<String> FIBER = new ArrayList<String>();
+                                List<String> PROTEIN = new ArrayList<String>();
+                                List<String> FAT = new ArrayList<String>();
+                                List<String> SUGAR = new ArrayList<String>();
+                                List<String> CARBS = new ArrayList<String>();
+
+                                // run through ingredients tracked and add dates
+                                for (int m=0; m<counter2; m++) {
+                                    nutrientName=nutrName[m];
+                                    if (nutrientName.equals("sodium")) {
+                                        //Date date=newFormat.parse(Integer.toString.(validDates[i]));
+                                        SODIUM.add("");
+                                    }
+                                    if (nutrientName.equals("fiber")) {
+                                        FIBER.add("");
+                                    }
+                                    if (nutrientName.equals("protein")) {
+                                        PROTEIN.add("");
+                                    }
+                                    if (nutrientName.equals("fat")) {
+                                        FAT.add("");
+                                    }
+                                    if (nutrientName.equals("sugar")) {
+                                        SUGAR.add("");
+                                    }
+                                    if (nutrientName.equals("carbohydrate")) {
+                                        CARBS.add("");
+                                    }
+                                }
+
+                                //listDataChild(listDataHeader.get(0), SODIUM);
+
+                                listAdapter = new ExpandableListAdapter(WeekActivity.this, listDataHeader, listDataChild);
+
+                                // setting list adapter
+                                expListView.setAdapter(listAdapter);
+
+                                // Listview Group click listener
+                                expListView.setOnGroupClickListener(new OnGroupClickListener() {
+
+                                    @Override
+                                    public boolean onGroupClick(ExpandableListView parent, View v,
+                                                                int groupPosition, long id) {
+                                        // Toast.makeText(getApplicationContext(),
+                                        // "Group Clicked " + listDataHeader.get(groupPosition),
+                                        // Toast.LENGTH_SHORT).show();
+                                        return false;
+                                    }
+                                });
+
+                                // Listview Group expanded listener
+                                expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+
+                                    @Override
+                                    public void onGroupExpand(int groupPosition) {
+                                        Toast.makeText(getApplicationContext(),
+                                                listDataHeader.get(groupPosition) + " Expanded",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                // Listview Group collasped listener
+                                expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+
+                                    @Override
+                                    public void onGroupCollapse(int groupPosition) {
+                                        Toast.makeText(getApplicationContext(),
+                                                listDataHeader.get(groupPosition) + " Collapsed",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+
+                                // Listview on child click listener
+                                expListView.setOnChildClickListener(new OnChildClickListener() {
+
+                                    @Override
+                                    public boolean onChildClick(ExpandableListView parent, View v,
+                                                                int groupPosition, int childPosition, long id) {
+                                        // TODO Auto-generated method stub
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                listDataHeader.get(groupPosition)
+                                                        + " : "
+                                                        + listDataChild.get(
+                                                        listDataHeader.get(groupPosition)).get(
+                                                        childPosition), Toast.LENGTH_SHORT)
+                                                .show();
+                                        return false;
+                                    }
+                                });
+
                             }
                         }
                     }
