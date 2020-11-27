@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".StatisticsDayActivity"></activity>
         <activity android:name=".Settings_Delete" />
-        <activity android:name=".Settings_EditNutrient" />
+        <activity android:name=".Settings_EditNutrient"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ui.objectPassEx.Act3" />
         <activity android:name=".ui.objectPassEx.Act2" />
         <activity android:name=".ui.objectPassEx.Act1" />

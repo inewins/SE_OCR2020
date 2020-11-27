@@ -123,7 +123,24 @@ public class Settings_Main extends AppCompatActivity {
         btn2EditNutrient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings_Main.this, Settings_EditNutrient.class));
+                String nutrientsString = "";
+                String nutrientsGoalsString = "";
+                int calGoals = userData.get(currUserIndex).getCalorieGoalsQty();
+                List<String> nutrients = userData.get(currUserIndex).getIngredientsYes();
+                List<String> nutrientsGoals = userData.get(currUserIndex).getIngredientsYesGoalsQty();
+                for (String q: nutrients){
+                    nutrientsString= nutrientsString+q+" ";
+                }
+                for (String q: nutrientsGoals){
+                    nutrientsGoalsString= nutrientsGoalsString+q+" ";
+                }
+                String userID = userData.get(currUserIndex).getId()+"";
+                Intent i = new Intent(getApplicationContext(), Settings_EditNutrient.class);
+                i.putExtra("userID",userID);
+                i.putExtra("calGoals",calGoals);
+                i.putExtra("nutrients", nutrientsString);
+                i.putExtra("nutrientsGoals", nutrientsGoalsString);
+                startActivity(i);
             }
         });
 
