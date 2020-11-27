@@ -38,20 +38,37 @@
 
     <ListView
         android:id="@+id/statsView"
-        android:layout_width="349dp"
-        android:layout_height="382dp"
+        android:layout_width="324dp"
+        android:layout_height="270dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.28">
+        app:layout_constraintVertical_bias="0.14">
 
 
-    </ListView>"center"
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/noDataDisplay"
+        android:layout_width="271dp"
+        android:layout_height="72dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.815" /><![CDATA[
+
+    "center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.076" />
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>
