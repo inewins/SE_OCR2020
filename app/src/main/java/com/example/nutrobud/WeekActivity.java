@@ -448,41 +448,7 @@ public class WeekActivity extends AppCompatActivity {
                                 // setting list adapter
                                 expListView.setAdapter(listAdapter);
 
-//                                // Listview Group click listener
-//                                expListView.setOnGroupClickListener(new OnGroupClickListener() {
 //
-//                                    @Override
-//                                    public boolean onGroupClick(ExpandableListView parent, View v,
-//                                                                int groupPosition, long id) {
-//                                         Toast.makeText(getApplicationContext(),
-//                                         "Group Clicked " + listDataHeader.get(groupPosition),
-//                                         Toast.LENGTH_SHORT).show();
-//                                        return false;
-//                                    }
-//                                });
-//
-//                                // Listview Group expanded listener
-//                                expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-//
-//                                    @Override
-//                                    public void onGroupExpand(int groupPosition) {
-//                                        Toast.makeText(getApplicationContext(),
-//                                                listDataHeader.get(groupPosition) + " Expanded",
-//                                                Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//
-//                                // Listview Group collasped listener
-//                                expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-//
-//                                    @Override
-//                                    public void onGroupCollapse(int groupPosition) {
-//                                        Toast.makeText(getApplicationContext(),
-//                                                listDataHeader.get(groupPosition) + " Collapsed",
-//                                                Toast.LENGTH_SHORT).show();
-//
-//                                    }
-//                                });
 
                                 // Listview on child click listener
                                 expListView.setOnChildClickListener(new OnChildClickListener() {
