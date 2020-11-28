@@ -44,11 +44,21 @@ public class Settings_Delete extends AppCompatActivity {
     DocumentReference dr;
     EditText deleteEdit;
     private Map<String, Object> user = new HashMap<String, Object>();
+    Button back2Settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__delete);
+
+        back2Settings = findViewById(R.id.cancelBtnDel);
+        back2Settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings_Delete.this, Settings_Main.class));
+            }
+        });
+
         makeUserData();
         final TextView deleteText = findViewById(R.id.delView);
         final EditText deleteEdit = findViewById(R.id.delPass);

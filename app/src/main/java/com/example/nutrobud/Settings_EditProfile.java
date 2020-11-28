@@ -39,6 +39,7 @@ public class Settings_EditProfile extends AppCompatActivity {
         weight = findViewById(R.id.editWeight);
 
 
+
         Button btn2GoBack = (Button)findViewById(R.id.back2SettingBtn);                                     //Button to go to back to Settings_Main
         btn2GoBack.setOnClickListener(new View.OnClickListener() {
             @Override
