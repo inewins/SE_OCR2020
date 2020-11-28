@@ -56,7 +56,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Calendar_MainActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".WeekActivity" />
         <activity android:name=".StatisticsActivity" />
