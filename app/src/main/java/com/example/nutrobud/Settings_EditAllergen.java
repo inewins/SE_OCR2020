@@ -34,12 +34,21 @@ public class Settings_EditAllergen extends AppCompatActivity {
     String allergens;
     String strArr[];
     String userID;
+    Button back2Settings;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__edit_allergen);
+
+        back2Settings = findViewById(R.id.back2SettingBtn2);
+        back2Settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings_EditAllergen.this, Settings_Main.class));
+            }
+        });
 
         final LinearLayout linLayout = findViewById(R.id.linLayout);    //add buttons to this bad boy
         editAllergen = findViewById(R.id.editAllergenText);

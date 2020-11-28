@@ -45,12 +45,20 @@ public class Settings_EditNutrient extends AppCompatActivity {
     private AlertDialog dialog;
     TextView nutriName;
     EditText editNutri;
-    Button save, delete, cancel;
+    Button save, delete, cancel, back2Settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__edit_nutrient);
+
+        back2Settings = findViewById(R.id.back2SettingBtn3);
+        back2Settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings_EditNutrient.this, Settings_Main.class));
+            }
+        });
 
         final LinearLayout linLayout = findViewById(R.id.NutlinLayout);    //add buttons to this bad boy
         editnutrient = findViewById(R.id.NutEditText);

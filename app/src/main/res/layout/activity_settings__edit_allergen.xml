@@ -16,10 +16,10 @@
         <Button
             android:id="@+id/back2SettingBtn2"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="64dp"
-            android:layout_height="29dp"
+            android:layout_width="45dp"
+            android:layout_height="41dp"
+            android:drawableStart="@android:drawable/ic_menu_revert"
             android:textSize="8dp"
-            android:text="Back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
