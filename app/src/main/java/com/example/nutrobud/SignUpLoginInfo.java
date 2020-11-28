@@ -69,7 +69,7 @@ public class SignUpLoginInfo extends AppCompatActivity {
                     return;
                 } else if(Password.length() < 6) {
                     //Error if password is less that 6 characters
-                    passwordtext.setError("Password must be more that 5 characters long");
+                    passwordtext.setError("Password must 6 or more characters long");
                     return;
                 } else if (!Password.equals(Password2)){
                     //Set errors if both password fields do not match
@@ -83,7 +83,7 @@ public class SignUpLoginInfo extends AppCompatActivity {
 
                 //Pass intent and user to next activity
                 Intent i = new Intent(getApplicationContext(), SignUp1.class);
-                i.putExtra("User1", user);
+                i.putExtra("User", user);
                 startActivity(i);
             }
         });

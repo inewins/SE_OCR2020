@@ -28,7 +28,7 @@ import java.util.List;
 public class SignUpGoals extends AppCompatActivity {
 
     EditText goaltext, daily_cal_text;
-    TextView nvview;
+    TextView nvview, instruct;
     LinearLayout linlayout;
     Button savebtn, cancelbtn, reviewbtn, backbtn;
     PopupWindow goalPopUp;
@@ -46,10 +46,16 @@ public class SignUpGoals extends AppCompatActivity {
         daily_cal_text = findViewById(R.id.Daily_Cal_Text);
         reviewbtn = findViewById(R.id.ReviewBtn);
         backbtn = findViewById(R.id.BackBtn);
+        instruct = findViewById(R.id.Instructions);
+
+        instruct.setVisibility(View.INVISIBLE);
 
         //Get user's wanted list of vitamins and nutrients
         final List<String> ingredient_yes = user.getIngredientsYes();
         final ArrayList<Integer> ing_goals_yes = new ArrayList<Integer>();
+
+        if(ingredient_yes.size() != 0)
+            instruct.setVisibility(View.VISIBLE);
 
         //Check if the user already has goals set
         if(user.getIngredientsYesGoalsQty() == null) {
@@ -59,9 +65,16 @@ public class SignUpGoals extends AppCompatActivity {
                 //-1 means no goal set
                 ing_goals_yes.add(-1);
             }
-        }else{
+        }else if(user.getIngredientsYesGoalsQty().size() == 0) {
+            //If there list was already initialized but is not empty
+            //Make ing_yes_goals the same size as ingredient_yes so indexes match up
+            for (int i = 0; i < ingredient_yes.size(); i++) {
+                //-1 means no goal set
+                ing_goals_yes.add(-1);
+            }
+        }else {
             //If it does, parse each string value of the integer into an integer and save into local string
-            for(int j = 0; j < user.getIngredientsYesGoalsQty().size(); j++){
+            for (int j = 0; j < user.getIngredientsYesGoalsQty().size(); j++) {
                 ing_goals_yes.add(Integer.parseInt(user.getIngredientsYesGoalsQty().get(j)));
             }
         }
@@ -69,18 +82,19 @@ public class SignUpGoals extends AppCompatActivity {
         //Set formatting for output
         final ArrayList<String> Output = new ArrayList<>();
         String temp = new String();
-        for(int i = 0; i < ingredient_yes.size(); i++)
-        {
-            temp = ingredient_yes.get(i);
-            //Check if there is a goal set or not
-            if(ing_goals_yes.get(i) == -1) {
-                //If no goal set:
-                temp = temp + " | No daily goal set";
-            } else{
-                //If goal is set:
-                temp = temp + " | " + user.getIngredientsYesGoalsQty().get(i) + " mg per day";
+        if(ing_goals_yes.size() != 0) {
+            for (int i = 0; i < ingredient_yes.size(); i++) {
+                temp = ingredient_yes.get(i);
+                //Check if there is a goal set or not
+                if (ing_goals_yes.get(i) == -1) {
+                    //If no goal set:
+                    temp = temp + " | No daily goal set";
+                } else {
+                    //If goal is set:
+                    temp = temp + " | " + user.getIngredientsYesGoalsQty().get(i) + " mg per day";
+                }
+                Output.add(temp);
             }
-            Output.add(temp);
         }
 
         //Must adapt output to display in a ListView
@@ -176,13 +190,19 @@ public class SignUpGoals extends AppCompatActivity {
                 String dailyCal_s = daily_cal_text.getText().toString().trim();
 
                 //Check if a calorie goal per day was set
-                if(!TextUtils.isEmpty(dailyCal_s))
+                if(TextUtils.isEmpty(dailyCal_s))
                 {
-                    //If it is not empty, save to user
-                    user.setCalorieGoalsQty(Integer.parseInt(dailyCal_s));
-                } else{
                     //If the user did not enter anyting, save a default value of 2000
                     user.setCalorieGoalsQty(2000);
+
+                } else if(Integer.parseInt(dailyCal_s) < 1) {
+                    //Set error if calorie is 0
+                    daily_cal_text.setError("Daily calorie intake must be greater than 0");
+                    return;
+                }else{
+                    //If it is not empty, save to user
+                    user.setCalorieGoalsQty(Integer.parseInt(dailyCal_s));
+
                 }
 
                 //Parse all of the goals back into strings from integers
