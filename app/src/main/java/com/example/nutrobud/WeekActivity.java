@@ -54,7 +54,7 @@ import static java.sql.Types.NULL;
 
 public class WeekActivity extends AppCompatActivity {
 
-    TextView statsTitle, weekDisplayView;
+    TextView statsTitle, weekDisplayView, instructions;
     Button backButton;
     private String date, mDay, mMonth, mYear;
 
@@ -120,6 +120,7 @@ public class WeekActivity extends AppCompatActivity {
         statsTitle=(TextView) findViewById(R.id.statsTitle);
         backButton=(Button)findViewById(R.id.backButton);
         weekDisplayView = (TextView) findViewById(R.id.weekView);
+        instructions = (TextView) findViewById(R.id.instructionsView);
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -201,16 +202,7 @@ public class WeekActivity extends AppCompatActivity {
                                     if((userData.get(currUserIndex).getStats().get(tempString).getNutrients() != null))
                                     {
                                         datesArray[x]=tempString;
-                                        //validDates[x]=i;
                                         x++;
-//                                       for(int j=0; j<counter;j++) {
-//                                           datesArray[x]=tempString;
-//                                           validDates[x]=i;
-//                                           x++;
-////                                           datesArray[j]=tempString;
-////                                           validDates[j]=i;
-//                                       }
-
                                     }
                                 }
 
@@ -359,7 +351,7 @@ public class WeekActivity extends AppCompatActivity {
                                         nutrientName = nutrName[m];
                                         if (userData.get(currUserIndex).getStats().get(datesArray[a]).getNutrients().get(nutrName[m]) != NULL) {
                                             intake = userData.get(currUserIndex).getStats().get(datesArray[a]).getNutrients().get(nutrName[m]);
-                                            if (nutrientName.equals("sodium")) {
+                                            if (nutrientName.equals("sodium")) { // not adding right
                                                 String oldDateString = datesArray[a];
                                                 String newDateString;
                                                 SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
@@ -456,41 +448,41 @@ public class WeekActivity extends AppCompatActivity {
                                 // setting list adapter
                                 expListView.setAdapter(listAdapter);
 
-                                // Listview Group click listener
-                                expListView.setOnGroupClickListener(new OnGroupClickListener() {
-
-                                    @Override
-                                    public boolean onGroupClick(ExpandableListView parent, View v,
-                                                                int groupPosition, long id) {
-                                         Toast.makeText(getApplicationContext(),
-                                         "Group Clicked " + listDataHeader.get(groupPosition),
-                                         Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-                                });
-
-                                // Listview Group expanded listener
-                                expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-
-                                    @Override
-                                    public void onGroupExpand(int groupPosition) {
-                                        Toast.makeText(getApplicationContext(),
-                                                listDataHeader.get(groupPosition) + " Expanded",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                                // Listview Group collasped listener
-                                expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-                                    @Override
-                                    public void onGroupCollapse(int groupPosition) {
-                                        Toast.makeText(getApplicationContext(),
-                                                listDataHeader.get(groupPosition) + " Collapsed",
-                                                Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
+//                                // Listview Group click listener
+//                                expListView.setOnGroupClickListener(new OnGroupClickListener() {
+//
+//                                    @Override
+//                                    public boolean onGroupClick(ExpandableListView parent, View v,
+//                                                                int groupPosition, long id) {
+//                                         Toast.makeText(getApplicationContext(),
+//                                         "Group Clicked " + listDataHeader.get(groupPosition),
+//                                         Toast.LENGTH_SHORT).show();
+//                                        return false;
+//                                    }
+//                                });
+//
+//                                // Listview Group expanded listener
+//                                expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+//
+//                                    @Override
+//                                    public void onGroupExpand(int groupPosition) {
+//                                        Toast.makeText(getApplicationContext(),
+//                                                listDataHeader.get(groupPosition) + " Expanded",
+//                                                Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//
+//                                // Listview Group collasped listener
+//                                expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+//
+//                                    @Override
+//                                    public void onGroupCollapse(int groupPosition) {
+//                                        Toast.makeText(getApplicationContext(),
+//                                                listDataHeader.get(groupPosition) + " Collapsed",
+//                                                Toast.LENGTH_SHORT).show();
+//
+//                                    }
+//                                });
 
                                 // Listview on child click listener
                                 expListView.setOnChildClickListener(new OnChildClickListener() {
