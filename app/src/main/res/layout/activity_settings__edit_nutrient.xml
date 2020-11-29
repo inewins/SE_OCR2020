@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    android:background="#C4FAB8"
     android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,34 +13,70 @@
         android:layout_height="match_parent"
         tools:context=".EditAllergen">
 
+        <Button
+            android:id="@+id/back2SettingBtn3"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="45dp"
+            android:layout_height="41dp"
+            android:drawableLeft="@android:drawable/ic_menu_revert"
+            android:textSize="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
-            android:id="@+id/navEmail"
+            android:id="@+id/NutTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Daily Calorie Intake"
+            android:textColor="#0FA615"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/NutMainText" />
+
+        <EditText
+            android:id="@+id/NutDailyCal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ems="10"
+            android:hint="2000"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/NutTextView"
+            app:layout_constraintTop_toBottomOf="@+id/NutTextView" />
+
+        <TextView
+            android:id="@+id/NutMainText"
             android:layout_width="275dp"
             android:layout_height="38dp"
             android:layout_marginTop="28dp"
             android:autoText="false"
+            android:background="#41AF2D"
             android:gravity="center_horizontal"
             android:text="Current Nutrients Tracked"
             android:textSize="22sp"
             android:verticalScrollbarPosition="left"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="#41AF2D"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
-            android:id="@+id/scrollView2"
+            android:id="@+id/NutScrollView"
             android:layout_width="275dp"
             android:layout_height="230dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
+            android:background="#41AF2D"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.551"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/navEmail"
-            android:background="#41AF2D">
+            app:layout_constraintTop_toBottomOf="@+id/NutDailyCal">
 
 
             <LinearLayout
-                android:id="@+id/linLayout"
+                android:id="@+id/NutlinLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -47,42 +84,40 @@
         </ScrollView>
 
         <EditText
-            android:id="@+id/editAllergenText"
+            android:id="@+id/NutEditText"
             android:layout_width="200dp"
             android:layout_height="48dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="28dp"
             android:ems="10"
             android:focusable="auto"
             android:gravity="center_horizontal"
             android:hint="Enter Nutrients"
             android:inputType="textPersonName"
             android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="@+id/scrollView2"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+            app:layout_constraintStart_toStartOf="@+id/NutScrollView"
+            app:layout_constraintTop_toBottomOf="@+id/NutScrollView" />
 
         <Button
-            android:id="@+id/addBtn"
+            android:id="@+id/NutaddBtn"
             android:layout_width="75dp"
             android:layout_height="48dp"
-            android:layout_marginStart="4dp"
+            android:background="#4FDD35"
             android:text="Add"
-            app:layout_constraintBottom_toBottomOf="@+id/editAllergenText"
-            app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/editAllergenText"
-            android:background="#4FDD35"/>
+            app:layout_constraintStart_toEndOf="@+id/NutEditText"
+            app:layout_constraintTop_toTopOf="@+id/NutEditText" />
 
         <Button
-            android:id="@+id/subBtn"
+            android:id="@+id/NutsubBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="108dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="100dp"
+            android:background="#4FDD35"
             android:text="Submit"
-            app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="@+id/scrollView2"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-            android:background="#4FDD35"/>
+            app:layout_constraintEnd_toEndOf="@+id/NutScrollView"
+            app:layout_constraintHorizontal_bias="0.459"
+            app:layout_constraintStart_toStartOf="@+id/NutScrollView"
+            app:layout_constraintTop_toBottomOf="@+id/NutScrollView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

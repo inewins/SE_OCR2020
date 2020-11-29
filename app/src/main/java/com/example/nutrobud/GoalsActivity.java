@@ -2,44 +2,27 @@ package com.example.nutrobud;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import java.util.Arrays;
-import java.util.HashMap;
-import android.widget.SimpleAdapter;
 import android.view.View;
-import android.os.Handler;
-import android.os.Bundle;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import java.text.SimpleDateFormat;
-import android.widget.ScrollView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import android.widget.ListView;
 import android.widget.LinearLayout;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.example.nutrobud.ui.home.User;
-import com.example.nutrobud.ui.home.Stats;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -189,7 +172,7 @@ public class GoalsActivity extends AppCompatActivity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    while (currentCals<=calGoals) {
+                                    while ((currentCals<=calGoals) || (currentCals>=calGoals)) {
                                         //update progress bar and display current value in text view
                                         hdlr.post(new Runnable() {
                                             @Override
@@ -202,6 +185,7 @@ public class GoalsActivity extends AppCompatActivity {
                                             //sleep for 100 ms to show progress slowly
                                             Thread.sleep(16);
                                         } catch(InterruptedException e) {
+                                            e.printStackTrace();
                                             e.printStackTrace();
                                         }
                                     }

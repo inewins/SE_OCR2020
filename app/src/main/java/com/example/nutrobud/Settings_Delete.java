@@ -95,6 +95,7 @@ public class Settings_Delete extends AppCompatActivity {
                     user.put("email", FieldValue.delete());
 
                     dr.set(user, SetOptions.merge());
+                    dr.delete();
                     final FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
                     user1.delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
