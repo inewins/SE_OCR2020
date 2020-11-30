@@ -321,11 +321,7 @@ public class HomeFragment<i> extends Fragment {
         }
 
         //Setting data in the Firestore DB after done searching
-        //setFirestoreData
         user.put("stats", statsMapObj);
-        //CREATE NEW VAR TO STORE VALUES BEFORE ADDITION WITH PREV VALS
-
-
         scanHelper.setId(currUserID);
         dr.set(user, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -335,8 +331,6 @@ public class HomeFragment<i> extends Fragment {
                 startActivity(i);
             }
         });
-        //pass to other function
-        //END: setFirestoreData
     }
 
     public void searchAllergens(String textBlock){
@@ -514,3 +508,4 @@ public class HomeFragment<i> extends Fragment {
         return image;
     }
 }
+//ignore this comment
