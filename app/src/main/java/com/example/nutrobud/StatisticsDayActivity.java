@@ -88,6 +88,7 @@ public class StatisticsDayActivity extends AppCompatActivity {
     private String todayDate = formatter.format(new Date());
 
 
+
     // get data from Firestore
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
     private List<User> userData= new ArrayList<>();
@@ -118,6 +119,13 @@ public class StatisticsDayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics_day);
 
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+        if(b!=null)
+        {
+            todayDate = (String) b.get("date");
+        }
+        Log.d("123", "DATE SHOWN"+todayDate);
 
         statsView = findViewById(R.id.statsView);
 

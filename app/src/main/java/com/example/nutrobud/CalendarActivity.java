@@ -21,12 +21,14 @@ public class CalendarActivity extends AppCompatActivity {
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
-                //String date = (i1 + 1) + "/" + i2 + "/" + i;
-                //Log.d(TAG, "onSelectedDayChange: mm/dd/yyyy: " + date);
+                String date = (i1 + 1) + "/" + i2 + "/" + i;
+                String sendit = i+""+ (i1+1)+i2;
+                Log.d("123", "onSelectedDayChange: mm/dd/yyyy: " + date);
+                Log.d("123", "DATE IN CALENDAR " + sendit);
 
-                Intent intent = new Intent(CalendarActivity.this, StatisticsActivity.class);
-                //intent.putExtra("date", date);
-                startActivity(intent);
+                Intent ii = new Intent(getApplicationContext(), StatisticsDayActivity.class);
+                ii.putExtra("date",sendit);
+                startActivity(ii);
             }
         });
 
