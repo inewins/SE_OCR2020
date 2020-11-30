@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.nutrobud">
 
     <uses-feature
@@ -16,7 +17,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ExpandableListAdapter"></activity>
+        <activity android:name=".ExpandableListAdapter"
+            tools:ignore="Instantiatable"></activity>
         <activity android:name=".StatisticsDayActivity" />
         <activity android:name=".StatisticsDayActivityCalendar" />
         <activity android:name=".Settings_Delete" />

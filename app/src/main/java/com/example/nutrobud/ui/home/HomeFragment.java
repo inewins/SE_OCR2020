@@ -40,6 +40,7 @@ import com.example.nutrobud.GoalsActivity;
 import com.example.nutrobud.R;
 import com.example.nutrobud.SignUpLoginInfo;
 import com.example.nutrobud.StatisticsActivity;
+import com.example.nutrobud.StatisticsDayActivity;
 import com.example.nutrobud.ui.objectPassEx.Act1;
 import com.example.nutrobud.ui.scanResult.ScanHelper;
 import com.example.nutrobud.ui.scanResult.ScanResult;
@@ -222,7 +223,7 @@ public class HomeFragment<i> extends Fragment {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
+                startActivity(new Intent(getApplicationContext(), StatisticsDayActivity.class));
             }
         });
         scanBtn.setOnClickListener(new View.OnClickListener() {
