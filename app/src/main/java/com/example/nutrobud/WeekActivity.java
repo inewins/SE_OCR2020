@@ -191,7 +191,6 @@ public class WeekActivity extends AppCompatActivity {
 
                             // create arrays to store valid dates
                             String[] datesArray = new String[counter];
-                            int[] validDates = new int[counter];
                             int x = 0;
                             // store valid dates in array
                             tempString=startDate; // initialize as start date aka int i. Increase as needed
@@ -208,7 +207,6 @@ public class WeekActivity extends AppCompatActivity {
 
                             }
                             System.out.println("string array of valid dates: " + Arrays.toString(datesArray)); // delete later
-                            System.out.println("num array of valid dates: " + Arrays.toString(validDates)); // delete later
 
                             // prepare list data
                             listDataHeader = new ArrayList<String>();
@@ -220,14 +218,14 @@ public class WeekActivity extends AppCompatActivity {
                                 Set<String> milliName = userData.get(currUserIndex).getStats().get(datesArray[i]).getNutrients().keySet(); // set keys to Set
                                 nutrName = convert(milliName); //convert to string array
                                 System.out.println("Array of string: " + Arrays.toString(nutrName)); // delete later
-
+                            }
                                 // count number of ingredients tracked
                                 for (int l = 0; l < nutrName.length; l++) {
                                     counter2++;
                                 }
                                 System.out.println("Counter2 is: " + counter2); // delete later
 
-
+                            for(int i=0; i<counter; i++){
                                 // run through each ingredient tracked to get intake amount
                                 for (int k = 0; k < counter2; k++) {
                                     nutrientName = nutrName[k];
@@ -328,7 +326,7 @@ public class WeekActivity extends AppCompatActivity {
                                 } //************* end for loop
                             } //***** end for loop
                                 System.out.println("total carbs: " + carbs); // delete later
-                            System.out.println("total sodium: " + sodium); // delete later
+                            System.out.println("total sodium: " + carbs); // delete later
 
                                 // adding child data to list
                                 listDataHeader.add("SODIUM: " + sodium + " mg");
