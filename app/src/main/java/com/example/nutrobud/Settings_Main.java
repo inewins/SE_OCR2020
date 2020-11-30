@@ -113,6 +113,7 @@ public class Settings_Main extends AppCompatActivity {
         btn2Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(Settings_Main.this, Login.class));
             }
         });
@@ -129,7 +130,11 @@ public class Settings_Main extends AppCompatActivity {
                 List<String> nutrients = userData.get(currUserIndex).getIngredientsYes();
                 List<String> nutrientsGoals = userData.get(currUserIndex).getIngredientsYesGoalsQty();
                 for (String q: nutrients){
-                    nutrientsString= nutrientsString+q+" ";
+                    nutrientsString= nutrientsString + "," + q;
+                    if(nutrientsString.charAt(nutrientsString.length()-1) == ',')
+                    {
+                        nutrientsString.substring(nutrientsString.length()-1);
+                    }
                 }
                 for (String q: nutrientsGoals){
                     nutrientsGoalsString= nutrientsGoalsString+q+" ";

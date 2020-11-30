@@ -25,6 +25,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.text.ParseException;
 import java.util.Arrays;
 import android.view.View;
 import java.text.SimpleDateFormat;
@@ -52,7 +54,7 @@ import static java.sql.Types.NULL;
 
 public class WeekActivity extends AppCompatActivity {
 
-    TextView statsTitle, weekDisplayView;
+    TextView statsTitle, weekDisplayView, instructions;
     Button backButton;
     private String date, mDay, mMonth, mYear;
 
@@ -81,7 +83,9 @@ public class WeekActivity extends AppCompatActivity {
     private String lastDate = formatter.format(new Date());
     private SimpleDateFormat displayStartFormat;
     private SimpleDateFormat displayEndFormat;
-    SimpleDateFormat newFormat = new SimpleDateFormat("MMMM d");
+
+    final String oldFORMAT = "yyyyMMdd";
+    final String newFORMAT = "MMM d (EEE)";
 
     // get data from Firestore
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
@@ -116,6 +120,7 @@ public class WeekActivity extends AppCompatActivity {
         statsTitle=(TextView) findViewById(R.id.statsTitle);
         backButton=(Button)findViewById(R.id.backButton);
         weekDisplayView = (TextView) findViewById(R.id.weekView);
+        instructions = (TextView) findViewById(R.id.instructionsView);
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -187,6 +192,7 @@ public class WeekActivity extends AppCompatActivity {
                             // create arrays to store valid dates
                             String[] datesArray = new String[counter];
                             int[] validDates = new int[counter];
+                            int x = 0;
                             // store valid dates in array
                             tempString=startDate; // initialize as start date aka int i. Increase as needed
                             for(int i=startNum; i<=endNum; i++){
@@ -195,17 +201,14 @@ public class WeekActivity extends AppCompatActivity {
                                 if((userData.get(currUserIndex).getStats().get(tempString) != null)){
                                     if((userData.get(currUserIndex).getStats().get(tempString).getNutrients() != null))
                                     {
-                                       for(int j=0; j<counter;j++) {
-                                           datesArray[j]=tempString;
-                                           validDates[j]=i;
-                                       }
-
+                                        datesArray[x]=tempString;
+                                        x++;
                                     }
                                 }
 
                             }
-                            System.out.println("string array: " + datesArray[0]); // delete later
-                            System.out.println("num array: " + Arrays.toString(validDates)); // delete later
+                            System.out.println("string array of valid dates: " + Arrays.toString(datesArray)); // delete later
+                            System.out.println("num array of valid dates: " + Arrays.toString(validDates)); // delete later
 
                             // prepare list data
                             listDataHeader = new ArrayList<String>();
@@ -219,10 +222,11 @@ public class WeekActivity extends AppCompatActivity {
                                 System.out.println("Array of string: " + Arrays.toString(nutrName)); // delete later
 
                                 // count number of ingredients tracked
-                                for (int l = 0; l < nutrName.length; l++) {
+                                for (int l = 0; l < nutrName.length / 2; l++) {
                                     counter2++;
                                 }
-                                System.out.println("Counter is: " + counter); // delete later
+                                System.out.println("Counter2 is: " + counter2); // delete later
+
 
                                 // run through each ingredient tracked to get intake amount
                                 for (int k = 0; k < counter2; k++) {
@@ -234,28 +238,96 @@ public class WeekActivity extends AppCompatActivity {
                                         // if nutrient intake is detected, add to previous intake to get total intake for week
                                         if (nutrientName.equals("sodium")) {
                                             sodium = sodium + intake;
+//                                            String oldDateString = datesArray[i];
+//                                            String newDateString;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+//                                            try {
+//                                                Date d2 = sdf.parse(oldDateString);
+//                                                sdf.applyPattern(newFORMAT);
+//                                                newDateString = sdf.format(d2);
+//                                                SODIUM.add(newDateString + ": " + intake + "mg");
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
                                         }
                                         if (nutrientName.equals("fiber")) {
                                             fiber = fiber + intake;
+//                                            String oldDateString = datesArray[i];
+//                                            String newDateString;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+//                                            try {
+//                                                Date d2 = sdf.parse(oldDateString);
+//                                                sdf.applyPattern(newFORMAT);
+//                                                newDateString = sdf.format(d2);
+//                                                FIBER.add(newDateString + ": " + intake + "mg");
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
                                         }
                                         if (nutrientName.equals("protein")) {
                                             protein = protein + intake;
+//                                            String oldDateString = datesArray[i];
+//                                            String newDateString;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+//                                            try {
+//                                                Date d2 = sdf.parse(oldDateString);
+//                                                sdf.applyPattern(newFORMAT);
+//                                                newDateString = sdf.format(d2);
+//                                                PROTEIN.add(newDateString + ": " + intake + "mg");
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
                                         }
                                         if (nutrientName.equals("fat")) {
                                             fat = fat + intake;
+//                                            String oldDateString = datesArray[i];
+//                                            String newDateString;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+//                                            try {
+//                                                Date d2 = sdf.parse(oldDateString);
+//                                                sdf.applyPattern(newFORMAT);
+//                                                newDateString = sdf.format(d2);
+//                                                FAT.add(newDateString + ": " + intake + "mg");
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
                                         }
                                         if (nutrientName.equals("sugar")) {
                                             sugar = sugar + intake;
+//                                            String oldDateString = datesArray[i];
+//                                            String newDateString;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+//                                            try {
+//                                                Date d2 = sdf.parse(oldDateString);
+//                                                sdf.applyPattern(newFORMAT);
+//                                                newDateString = sdf.format(d2);
+//                                                SUGAR.add(newDateString + ": " + intake + "mg");
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
                                         }
                                         if (nutrientName.equals("carbohydrate")) {
                                             carbs = carbs + intake;
+//                                            String oldDateString = datesArray[i];
+//                                            String newDateString;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+//                                            try {
+//                                                Date d2 = sdf.parse(oldDateString);
+//                                                sdf.applyPattern(newFORMAT);
+//                                                newDateString = sdf.format(d2);
+//                                                CARBS.add(newDateString + ": " + intake + "mg");
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+                                        } else {
+                                            intake = 0;
                                         }
                                     }
-                                    else {
-                                        intake = 0;
-                                    }
-                                }
+                                } //************* end for loop
+                            } //***** end for loop
                                 System.out.println("total carbs: " + carbs); // delete later
+
                                 // adding child data to list
                                 listDataHeader.add("SODIUM: " + sodium + " mg");
                                 listDataHeader.add("FIBER: " + fiber + " mg");
@@ -272,72 +344,111 @@ public class WeekActivity extends AppCompatActivity {
                                 List<String> SUGAR = new ArrayList<String>();
                                 List<String> CARBS = new ArrayList<String>();
 
-                                // run through ingredients tracked and add dates
-                                for (int m=0; m<counter2; m++) {
-                                    nutrientName=nutrName[m];
-                                    if (nutrientName.equals("sodium")) {
-                                        //Date date=newFormat.parse(Integer.toString.(validDates[i]));
-                                        SODIUM.add("");
-                                    }
-                                    if (nutrientName.equals("fiber")) {
-                                        FIBER.add("");
-                                    }
-                                    if (nutrientName.equals("protein")) {
-                                        PROTEIN.add("");
-                                    }
-                                    if (nutrientName.equals("fat")) {
-                                        FAT.add("");
-                                    }
-                                    if (nutrientName.equals("sugar")) {
-                                        SUGAR.add("");
-                                    }
-                                    if (nutrientName.equals("carbohydrate")) {
-                                        CARBS.add("");
+                                // run through each date
+                                for(int a=0; a<counter; a++) {
+
+                                    for (int m = 0; m < counter2; m++) {
+                                        nutrientName = nutrName[m];
+                                        if (userData.get(currUserIndex).getStats().get(datesArray[a]).getNutrients().get(nutrName[m]) != NULL) {
+                                            intake = userData.get(currUserIndex).getStats().get(datesArray[a]).getNutrients().get(nutrName[m]);
+                                            if (nutrientName.equals("sodium")) { // not adding right
+                                                String oldDateString = datesArray[a];
+                                                String newDateString;
+                                                SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+                                                try {
+                                                    Date d2 = sdf.parse(oldDateString);
+                                                    sdf.applyPattern(newFORMAT);
+                                                    newDateString = sdf.format(d2);
+                                                    SODIUM.add(newDateString + ": " + intake + "mg");
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+                                            if (nutrientName.equals("fiber")) {
+                                                String oldDateString = datesArray[a];
+                                                String newDateString;
+                                                SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+                                                try {
+                                                    Date d2 = sdf.parse(oldDateString);
+                                                    sdf.applyPattern(newFORMAT);
+                                                    newDateString = sdf.format(d2);
+                                                    FIBER.add(newDateString + ": " + intake + "mg");
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            if (nutrientName.equals("protein")) {
+                                                String oldDateString = datesArray[a];
+                                                String newDateString;
+                                                SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+                                                try {
+                                                    Date d2 = sdf.parse(oldDateString);
+                                                    sdf.applyPattern(newFORMAT);
+                                                    newDateString = sdf.format(d2);
+                                                    PROTEIN.add(newDateString + ": " + intake + "mg");
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            if (nutrientName.equals("fat")) {
+                                                String oldDateString = datesArray[a];
+                                                String newDateString;
+                                                SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+                                                try {
+                                                    Date d2 = sdf.parse(oldDateString);
+                                                    sdf.applyPattern(newFORMAT);
+                                                    newDateString = sdf.format(d2);
+                                                    FAT.add(newDateString + ": " + intake + "mg");
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            if (nutrientName.equals("sugar")) {
+                                                String oldDateString = datesArray[a];
+                                                String newDateString;
+                                                SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+                                                try {
+                                                    Date d2 = sdf.parse(oldDateString);
+                                                    sdf.applyPattern(newFORMAT);
+                                                    newDateString = sdf.format(d2);
+                                                    SUGAR.add(newDateString + ": " + intake + "mg");
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            if (nutrientName.equals("carbohydrate")) {
+                                                String oldDateString = datesArray[a];
+                                                String newDateString;
+                                                SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
+                                                try {
+                                                    Date d2 = sdf.parse(oldDateString);
+                                                    sdf.applyPattern(newFORMAT);
+                                                    newDateString = sdf.format(d2);
+                                                    CARBS.add(newDateString + ": " + intake + "mg");
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 
-                                //listDataChild(listDataHeader.get(0), SODIUM);
+
+
+                                listDataChild.put(listDataHeader.get(0), SODIUM);
+                                listDataChild.put(listDataHeader.get(1), FIBER);
+                                listDataChild.put(listDataHeader.get(2), PROTEIN);
+                                listDataChild.put(listDataHeader.get(3), FAT);
+                                listDataChild.put(listDataHeader.get(4), SUGAR);
+                                listDataChild.put(listDataHeader.get(5), CARBS);
 
                                 listAdapter = new ExpandableListAdapter(WeekActivity.this, listDataHeader, listDataChild);
 
                                 // setting list adapter
                                 expListView.setAdapter(listAdapter);
 
-                                // Listview Group click listener
-                                expListView.setOnGroupClickListener(new OnGroupClickListener() {
-
-                                    @Override
-                                    public boolean onGroupClick(ExpandableListView parent, View v,
-                                                                int groupPosition, long id) {
-                                        // Toast.makeText(getApplicationContext(),
-                                        // "Group Clicked " + listDataHeader.get(groupPosition),
-                                        // Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-                                });
-
-                                // Listview Group expanded listener
-                                expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-
-                                    @Override
-                                    public void onGroupExpand(int groupPosition) {
-                                        Toast.makeText(getApplicationContext(),
-                                                listDataHeader.get(groupPosition) + " Expanded",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                                // Listview Group collasped listener
-                                expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-                                    @Override
-                                    public void onGroupCollapse(int groupPosition) {
-                                        Toast.makeText(getApplicationContext(),
-                                                listDataHeader.get(groupPosition) + " Collapsed",
-                                                Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
+//
 
                                 // Listview on child click listener
                                 expListView.setOnChildClickListener(new OnChildClickListener() {
@@ -362,9 +473,10 @@ public class WeekActivity extends AppCompatActivity {
                         }
                     }
                     dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
-                }
+
             }
         });
         //END: getFirestoreData
     }
+
 }

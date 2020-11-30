@@ -249,8 +249,8 @@ public class GoalsActivity extends AppCompatActivity {
                                             goal = nutrGoal[x];
                                             nutrientName = nutrName[x];
                                             intake = 0;
-                                            System.out.println(nutrientName + ": " + intake + "/" + goal);
-                                            textArr.get(x).setText(nutrientName + ": " + intake + "/" + goal);
+                                            System.out.println(nutrientName + ": " + intake + "/" + goal + "mg");
+                                            textArr.get(x).setText(nutrientName + ": " + intake + "/" + goal + "mg");
                                             Log.d("123", nutrientName + ": " + intake + "/" + goal);
                                             Log.d("123", "Intake is " + intake);
                                             Log.d("123", "Goal is " + goal);
