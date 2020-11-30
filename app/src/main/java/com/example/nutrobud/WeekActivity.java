@@ -220,12 +220,19 @@ public class WeekActivity extends AppCompatActivity {
                                 System.out.println("Array of string: " + Arrays.toString(nutrName)); // delete later
                             }
                                 // count number of ingredients tracked
+
+                            if(nutrName == null){
+
+                                instructions.setText("No nutrition labels scanned so far. Data not available.");
+                                break;
+                            }
                                 for (int l = 0; l < nutrName.length; l++) {
                                     counter2++;
                                 }
                                 System.out.println("Counter2 is: " + counter2); // delete later
 
                             for(int i=0; i<counter; i++){
+
                                 // run through each ingredient tracked to get intake amount
                                 for (int k = 0; k < counter2; k++) {
                                     nutrientName = nutrName[k];
