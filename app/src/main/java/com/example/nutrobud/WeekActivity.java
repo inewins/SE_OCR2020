@@ -222,7 +222,7 @@ public class WeekActivity extends AppCompatActivity {
                                 System.out.println("Array of string: " + Arrays.toString(nutrName)); // delete later
 
                                 // count number of ingredients tracked
-                                for (int l = 0; l < nutrName.length / 2; l++) {
+                                for (int l = 0; l < nutrName.length; l++) {
                                     counter2++;
                                 }
                                 System.out.println("Counter2 is: " + counter2); // delete later
@@ -320,13 +320,15 @@ public class WeekActivity extends AppCompatActivity {
 //                                                e.printStackTrace();
 //                                            }
 //                                        }
-                                        } else {
+                                        }
+                                        else {
                                             intake = 0;
                                         }
                                     }
                                 } //************* end for loop
                             } //***** end for loop
                                 System.out.println("total carbs: " + carbs); // delete later
+                            System.out.println("total sodium: " + sodium); // delete later
 
                                 // adding child data to list
                                 listDataHeader.add("SODIUM: " + sodium + " mg");
