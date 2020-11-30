@@ -1,5 +1,4 @@
-# SE_OCR2020
-Bud
+# NutroBud
 
 NutroBud is an Android application written in Java that allows you to scan a nutrition label to track your nutritional intake. It also allows you to detect if there are any unwanted ingredients on the ingredients list. The vision system is supported by Google ML Kit and the backend is supported by the Firebase API. 
 
