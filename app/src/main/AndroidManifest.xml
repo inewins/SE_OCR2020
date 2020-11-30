@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ExpandableListAdapter"></activity>
         <activity android:name=".StatisticsDayActivity" />
+        <activity android:name=".StatisticsDayActivityCalendar" />
         <activity android:name=".Settings_Delete" />
         <activity android:name=".Settings_EditNutrient"
             android:windowSoftInputMode="stateHidden"/>
