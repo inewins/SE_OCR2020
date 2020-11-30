@@ -236,88 +236,27 @@ public class WeekActivity extends AppCompatActivity {
                                         // if nutrient intake is detected, add to previous intake to get total intake for week
                                         if (nutrientName.equals("sodium")) {
                                             sodium = sodium + intake;
-//                                            String oldDateString = datesArray[i];
-//                                            String newDateString;
-//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
-//                                            try {
-//                                                Date d2 = sdf.parse(oldDateString);
-//                                                sdf.applyPattern(newFORMAT);
-//                                                newDateString = sdf.format(d2);
-//                                                SODIUM.add(newDateString + ": " + intake + "mg");
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
+//
                                         }
                                         if (nutrientName.equals("fiber")) {
                                             fiber = fiber + intake;
-//                                            String oldDateString = datesArray[i];
-//                                            String newDateString;
-//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
-//                                            try {
-//                                                Date d2 = sdf.parse(oldDateString);
-//                                                sdf.applyPattern(newFORMAT);
-//                                                newDateString = sdf.format(d2);
-//                                                FIBER.add(newDateString + ": " + intake + "mg");
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
+//
                                         }
                                         if (nutrientName.equals("protein")) {
                                             protein = protein + intake;
-//                                            String oldDateString = datesArray[i];
-//                                            String newDateString;
-//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
-//                                            try {
-//                                                Date d2 = sdf.parse(oldDateString);
-//                                                sdf.applyPattern(newFORMAT);
-//                                                newDateString = sdf.format(d2);
-//                                                PROTEIN.add(newDateString + ": " + intake + "mg");
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
+//
                                         }
                                         if (nutrientName.equals("fat")) {
                                             fat = fat + intake;
-//                                            String oldDateString = datesArray[i];
-//                                            String newDateString;
-//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
-//                                            try {
-//                                                Date d2 = sdf.parse(oldDateString);
-//                                                sdf.applyPattern(newFORMAT);
-//                                                newDateString = sdf.format(d2);
-//                                                FAT.add(newDateString + ": " + intake + "mg");
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
+//
                                         }
                                         if (nutrientName.equals("sugar")) {
                                             sugar = sugar + intake;
-//                                            String oldDateString = datesArray[i];
-//                                            String newDateString;
-//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
-//                                            try {
-//                                                Date d2 = sdf.parse(oldDateString);
-//                                                sdf.applyPattern(newFORMAT);
-//                                                newDateString = sdf.format(d2);
-//                                                SUGAR.add(newDateString + ": " + intake + "mg");
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
+//
                                         }
                                         if (nutrientName.equals("carbohydrate")) {
                                             carbs = carbs + intake;
-//                                            String oldDateString = datesArray[i];
-//                                            String newDateString;
-//                                            SimpleDateFormat sdf = new SimpleDateFormat(oldFORMAT);
-//                                            try {
-//                                                Date d2 = sdf.parse(oldDateString);
-//                                                sdf.applyPattern(newFORMAT);
-//                                                newDateString = sdf.format(d2);
-//                                                CARBS.add(newDateString + ": " + intake + "mg");
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        }
+//
                                         }
                                         else {
                                             intake = 0;
