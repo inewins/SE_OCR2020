@@ -154,7 +154,7 @@ public class WeekActivity extends AppCompatActivity {
 
                             // get date for beginning of week- MONDAY
                             Calendar cal = Calendar.getInstance();
-                            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); // provides tdl form
+                            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY); // provides tdl form
                             String startDate = formatter.format(cal.getTime()); // format to yyyyMMdd for data use
                             displayStartFormat = new SimpleDateFormat("MMM d");
                             String displayStartDate = displayStartFormat.format(cal.getTime()); // format to MMMd for display on UI
