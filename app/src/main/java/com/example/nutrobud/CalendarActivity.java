@@ -26,7 +26,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Log.d("123", "onSelectedDayChange: mm/dd/yyyy: " + date);
                 Log.d("123", "DATE IN CALENDAR " + sendit);
 
-                Intent ii = new Intent(getApplicationContext(), StatisticsDayActivity.class);
+                Intent ii = new Intent(getApplicationContext(), StatisticsDayActivityCalendar.class);
                 ii.putExtra("date",sendit);
                 startActivity(ii);
             }
