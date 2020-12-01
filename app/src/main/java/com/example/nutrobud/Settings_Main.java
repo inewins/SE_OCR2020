@@ -130,7 +130,7 @@ public class Settings_Main extends AppCompatActivity {
                 List<String> nutrients = userData.get(currUserIndex).getIngredientsYes();
                 List<String> nutrientsGoals = userData.get(currUserIndex).getIngredientsYesGoalsQty();
                 for (String q: nutrients){
-                    nutrientsString= nutrientsString + "," + q;
+                    nutrientsString= nutrientsString + " " + q;
                     if(nutrientsString.charAt(nutrientsString.length()-1) == ',')
                     {
                         nutrientsString.substring(nutrientsString.length()-1);
